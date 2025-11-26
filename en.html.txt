@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pogon.io | Digital Industrial Solutions</title>
+    <meta name="description" content="Development of advanced MES systems and Industry 4.0 software solutions. Increase productivity through digital transformation.">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* --- KOPIRAJ ISTI STIL IZ index.html --- */
+        :root {
+            --primary: #3b82f6;
+            --accent: #0ea5e9;
+            --dark: #020617;
+            --glass: rgba(15, 23, 42, 0.7);
+            --text-gray: #94a3b8;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--dark);
+            color: white;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        nav {
+            position: fixed;
+            top: 0; width: 100%;
+            padding: 20px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(2, 6, 23, 0.8);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            z-index: 1000;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: white;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .logo span { color: var(--primary); }
+        .logo img { height: 30px; }
+
+        .nav-links { display: flex; align-items: center; }
+
+        .nav-links a {
+            color: var(--text-gray);
+            text-decoration: none;
+            margin-left: 30px;
+            font-size: 0.95rem;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        .nav-links a:hover { color: white; }
+        
+        .client-login-btn {
+            border: 1px solid var(--primary);
+            padding: 8px 20px;
+            border-radius: 4px;
+            color: var(--primary) !important;
+        }
+        .client-login-btn:hover { background: var(--primary); color: white !important; }
+
+        /* JEZIK */
+        .lang-switch {
+            margin-left: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--text-gray);
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+        .lang-switch a { margin-left: 0; text-decoration: none; color: var(--text-gray); transition: color 0.3s; }
+        .lang-switch a:hover { color: white; }
+        .lang-switch a.active { color: var(--primary); }
+        .lang-separator { opacity: 0.3; }
+
+
+        .hero {
+            position: relative;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            padding: 0 10%;
+            overflow: hidden;
+        }
+
+        .video-bg {
+            position: absolute;
+            top: 50%; left: 50%;
+            min-width: 100%; min-height: 100%;
+            transform: translate(-50%, -50%);
+            z-index: -1;
+            filter: brightness(0.4) contrast(1.1);
+        }
+
+        .hero-content { max-width: 700px; z-index: 2; }
+
+        .tagline {
+            color: var(--accent);
+            font-weight: 600;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            margin-bottom: 20px;
+            display: block;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            line-height: 1.1;
+            font-weight: 800;
+            margin-bottom: 25px;
+            background: linear-gradient(to right, #ffffff, #94a3b8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            color: #cbd5e1;
+            margin-bottom: 40px;
+            max-width: 600px;
+        }
+
+        .cta-group { display: flex; gap: 15px; }
+
+        .btn {
+            padding: 15px 35px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+            box-shadow: 0 10px 30px -10px rgba(59, 130, 246, 0.5);
+        }
+        .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 20px 40px -10px rgba(59, 130, 246, 0.6); }
+
+        .btn-outline {
+            border: 1px solid rgba(255,255,255,0.3);
+            color: white;
+            background: rgba(255,255,255,0.05);
+            backdrop-filter: blur(5px);
+        }
+        .btn-outline:hover { border-color: white; background: rgba(255,255,255,0.1); }
+
+        .stats-bar {
+            background: #0f172a;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            padding: 40px 10%;
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .stat-item { text-align: center; }
+        .stat-number { font-size: 2.5rem; font-weight: 800; color: white; display: block; }
+        .stat-label { color: var(--text-gray); font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px; }
+
+        .showcase {
+            padding: 100px 10%;
+            background: #020617;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+        }
+
+        .showcase-text h2 { font-size: 2.5rem; margin-bottom: 20px; }
+        .showcase-text p { color: var(--text-gray); margin-bottom: 30px; }
+
+        .feature-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+
+        .feature-box {
+            background: rgba(255,255,255,0.03);
+            padding: 20px;
+            border-radius: 12px;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+        .feature-box i { color: var(--primary); font-size: 1.5rem; margin-bottom: 15px; }
+        .feature-box h4 { margin-bottom: 10px; }
+        .feature-box p { font-size: 0.85rem; color: var(--text-gray); }
+
+        .showcase-img img {
+            width: 100%;
+            border-radius: 12px;
+            box-shadow: 0 0 50px rgba(59, 130, 246, 0.15);
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .services { padding: 100px 10%; background: #0f172a; text-align: center; }
+        .section-title { font-size: 2.5rem; margin-bottom: 60px; }
+
+        .cards-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px; }
+
+        .service-card {
+            background: #020617;
+            padding: 40px 30px;
+            border-radius: 16px;
+            border: 1px solid rgba(255,255,255,0.05);
+            transition: 0.3s;
+            text-align: left;
+        }
+        .service-card:hover { transform: translateY(-10px); border-color: var(--primary); }
+        
+        .service-icon {
+            width: 60px; height: 60px;
+            background: rgba(59, 130, 246, 0.1);
+            color: var(--primary);
+            display: flex; align-items: center; justify-content: center;
+            border-radius: 12px;
+            font-size: 1.5rem;
+            margin-bottom: 25px;
+        }
+        
+        .service-card h3 { font-size: 1.2rem; margin-bottom: 15px; }
+        .service-card p { color: var(--text-gray); font-size: 0.9rem; }
+
+        footer {
+            padding: 60px 10% 20px;
+            background: #020617;
+            border-top: 1px solid rgba(255,255,255,0.05);
+            color: var(--text-gray);
+        }
+        .footer-content { display: flex; justify-content: space-between; margin-bottom: 40px; }
+        .footer-info h4 { color: white; margin-bottom: 15px; font-size: 1.2rem; }
+        
+        .footer-bottom { text-align: center; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.05); font-size: 0.8rem; }
+
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+            .hero h1 { font-size: 2.5rem; }
+            .showcase { grid-template-columns: 1fr; }
+            .stats-bar { gap: 40px; }
+            .footer-content { flex-direction: column; gap: 30px; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <a href="index.html" class="logo">
+            <img src="https://i.postimg.cc/L6KLbH84/Pogon-io-LOGO-vertical.png" alt="Pogon.io">
+            Pogon<span>.io</span>
+        </a>
+        <div class="nav-links">
+            <a href="#about">Expertise</a>
+            <a href="#solutions">Solutions</a>
+            <a href="#contact">Contact</a>
+            <a href="portal.html" class="client-login-btn">Client Portal <i class="fas fa-lock"></i></a>
+            
+            <div class="lang-switch">
+                <a href="index.html">SR</a>
+                <span class="lang-separator">|</span>
+                <a href="en.html" class="active">EN</a>
+            </div>
+        </div>
+    </nav>
+
+    <header class="hero">
+        <video autoplay muted loop playsinline class="video-bg">
+            <source src="video_bg.mp4" type="video/mp4">
+        </video>
+
+        <div class="hero-content">
+            <span class="tagline">Industrial Software Engineering</span>
+            <h1>Digital Intelligence <br> for Your Factory.</h1>
+            <p>We engineer custom software solutions for production monitoring, quality control, and process automation. Turning data into profit.</p>
+            
+            <div class="cta-group">
+                <a href="#contact" class="btn btn-primary">Book a Consultation</a>
+                <a href="#solutions" class="btn btn-outline">Explore Solutions</a>
+            </div>
+        </div>
+    </header>
+
+    <div class="stats-bar">
+        <div class="stat-item">
+            <span class="stat-number">99.9%</span>
+            <span class="stat-label">System Uptime</span>
+        </div>
+        <div class="stat-item">
+            <span class="stat-number">Industry 4.0</span>
+            <span class="stat-label">Ready Solutions</span>
+        </div>
+        <div class="stat-item">
+            <span class="stat-number">Custom</span>
+            <span class="stat-label">Development</span>
+        </div>
+    </div>
+
+    <section id="about" class="showcase">
+        <div class="showcase-img">
+            <img src="dashboard_img.jpg" alt="Pogon.io MES Interface">
+        </div>
+        <div class="showcase-text">
+            <h2>Don't adapt to the software. <br> Let the software adapt to you.</h2>
+            <p>Unlike "boxed" off-the-shelf solutions, we develop systems that follow the specific DNA of your production line. Our team merges engineering expertise with modern tech stacks.</p>
+
+            <div class="feature-grid">
+                <div class="feature-box">
+                    <i class="fas fa-microchip"></i>
+                    <h4>IoT Integration</h4>
+                    <p>Direct connectivity with machines and sensors.</p>
+                </div>
+                <div class="feature-box">
+                    <i class="fas fa-chart-area"></i>
+                    <h4>Real-time Analytics</h4>
+                    <p>Data-driven decisions in real-time.</p>
+                </div>
+                <div class="feature-box">
+                    <i class="fas fa-mobile-alt"></i>
+                    <h4>Kiosk Applications</h4>
+                    <p>Simple interface for shop floor operators.</p>
+                </div>
+                <div class="feature-box">
+                    <i class="fas fa-cloud"></i>
+                    <h4>Cloud Native</h4>
+                    <p>Scalability, security, and global access.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="solutions" class="services">
+        <h2 class="section-title">Our Solutions</h2>
+        <div class="cards-container">
+            <div class="service-card">
+                <div class="service-icon"><i class="fas fa-cogs"></i></div>
+                <h3>Custom MES Development</h3>
+                <p>Full-scale Manufacturing Execution Systems tailored to your needs.</p>
+            </div>
+            <div class="service-card">
+                <div class="service-icon"><i class="fas fa-tablet-alt"></i></div>
+                <h3>Shop Floor Apps</h3>
+                <p>Digitize work orders, scrap reporting, and downtime tracking via tablets and touch screens.</p>
+            </div>
+            <div class="service-card">
+                <div class="service-icon"><i class="fas fa-database"></i></div>
+                <h3>System Integrations</h3>
+                <p>Connecting your ERP (SAP, Pantheon, etc.) directly to your production lines.</p>
+            </div>
+        </div>
+    </section>
+
+    <footer id="contact">
+        <div class="footer-content">
+            <div class="footer-info">
+                <h4>Pogon.io</h4>
+                <p>Your partner for digital transformation.</p>
+                <p>Kragujevac, Serbia</p>
+                <br>
+                <a href="mailto:info@pogon.io" style="color: var(--primary); text-decoration: none;">contact@pogon.io</a>
+            </div>
+            <div class="footer-info">
+                <h4>Links</h4>
+                <a href="index.html" style="color: #94a3b8; text-decoration: none; display: block;">Home</a>
+                <a href="#about" style="color: #94a3b8; text-decoration: none; display: block;">About</a>
+                <a href="portal.html" style="color: #94a3b8; text-decoration: none; display: block;">Client Login</a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 Pogon.io Software Development. All rights reserved.</p>
+        </div>
+    </footer>
+
+</body>
+</html>
