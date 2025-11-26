@@ -11,9 +11,9 @@
 
     <style>
         :root {
-            --primary: #3b82f6; /* Ozbiljna 'tech' plava */
+            --primary: #3b82f6;
             --accent: #0ea5e9;
-            --dark: #020617;     /* Veoma tamna, skoro crna */
+            --dark: #020617;
             --glass: rgba(15, 23, 42, 0.7);
             --text-gray: #94a3b8;
         }
@@ -28,59 +28,88 @@
             overflow-x: hidden;
         }
 
-        /* --- NAVIGATION --- */
+        /* --- NAVIGACIJA --- */
         nav {
             position: fixed;
-            top: 0; w: 100%; width: 100%;
-            padding: 20px 5%;
+            top: 0; width: 100%;
+            padding: 15px 5%;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background: rgba(2, 6, 23, 0.8);
+            background: rgba(2, 6, 23, 0.95);
             backdrop-filter: blur(10px);
             border-bottom: 1px solid rgba(255,255,255,0.1);
             z-index: 1000;
         }
 
         .logo {
-            font-size: 1.5rem;
+            font-size: 1.4rem;
             font-weight: 800;
             color: white;
             text-decoration: none;
             display: flex;
             align-items: center;
             gap: 10px;
+            white-space: nowrap;
         }
         .logo span { color: var(--primary); }
-        .logo img { height: 30px; }
+        .logo img { height: 28px; }
 
-        .nav-links a {
+        /* Kontejner za desnu stranu menija */
+        .nav-links { 
+            display: flex; 
+            align-items: center; 
+            gap: 20px; 
+        }
+
+        /* Linkovi (Ekspertiza, Rešenja...) */
+        .nav-link-item {
             color: var(--text-gray);
             text-decoration: none;
-            margin-left: 30px;
-            font-size: 0.95rem;
+            font-size: 0.9rem;
             font-weight: 500;
             transition: color 0.3s;
+            white-space: nowrap;
         }
-        .nav-links a:hover { color: white; }
+        .nav-link-item:hover { color: white; }
         
-	/* --- JEZIK --- */
-	
+        /* Dugme za klijent portal */
         .client-login-btn {
             border: 1px solid var(--primary);
-            padding: 8px 20px;
+            padding: 6px 15px;
             border-radius: 4px;
             color: var(--primary) !important;
+            font-size: 0.9rem;
+            text-decoration: none;
+            white-space: nowrap;
+            transition: 0.3s;
         }
         .client-login-btn:hover { background: var(--primary); color: white !important; }
 
-        /* --- HERO SECTION (VIDEO) --- */
+        /* Izbor jezika */
+        .lang-switch {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--text-gray);
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            padding-left: 15px;
+            border-left: 1px solid rgba(255,255,255,0.1);
+        }
+        .lang-switch a { text-decoration: none; color: var(--text-gray); transition: color 0.3s; }
+        .lang-switch a:hover { color: white; }
+        .lang-switch a.active { color: var(--primary); }
+        .lang-separator { opacity: 0.3; }
+
+
+        /* --- HERO --- */
         .hero {
             position: relative;
             height: 100vh;
             display: flex;
             align-items: center;
-            justify-content: flex-start; /* Poravnanje levo */
+            justify-content: flex-start;
             padding: 0 10%;
             overflow: hidden;
         }
@@ -91,13 +120,10 @@
             min-width: 100%; min-height: 100%;
             transform: translate(-50%, -50%);
             z-index: -1;
-            filter: brightness(0.4) contrast(1.1); /* Zatamnjen video da tekst iskoči */
+            filter: brightness(0.4) contrast(1.1);
         }
 
-        .hero-content {
-            max-width: 700px;
-            z-index: 2;
-        }
+        .hero-content { max-width: 700px; z-index: 2; margin-top: 60px; }
 
         .tagline {
             color: var(--accent);
@@ -110,7 +136,7 @@
         }
 
         .hero h1 {
-            font-size: 3.5rem;
+            font-size: 3rem;
             line-height: 1.1;
             font-weight: 800;
             margin-bottom: 25px;
@@ -120,16 +146,16 @@
         }
 
         .hero p {
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             color: #cbd5e1;
             margin-bottom: 40px;
             max-width: 600px;
         }
 
-        .cta-group { display: flex; gap: 15px; }
+        .cta-group { display: flex; gap: 15px; flex-wrap: wrap; }
 
         .btn {
-            padding: 15px 35px;
+            padding: 12px 30px;
             border-radius: 6px;
             text-decoration: none;
             font-weight: 600;
@@ -164,11 +190,11 @@
             gap: 20px;
         }
 
-        .stat-item { text-align: center; }
+        .stat-item { text-align: center; margin: 10px; }
         .stat-number { font-size: 2.5rem; font-weight: 800; color: white; display: block; }
         .stat-label { color: var(--text-gray); font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px; }
 
-        /* --- SHOWCASE SECTION --- */
+        /* --- SHOWCASE --- */
         .showcase {
             padding: 100px 10%;
             background: #020617;
@@ -178,20 +204,10 @@
             align-items: center;
         }
 
-        .showcase-text h2 {
-            font-size: 2.5rem;
-            margin-bottom: 20px;
-        }
-        .showcase-text p {
-            color: var(--text-gray);
-            margin-bottom: 30px;
-        }
+        .showcase-text h2 { font-size: 2.2rem; margin-bottom: 20px; }
+        .showcase-text p { color: var(--text-gray); margin-bottom: 30px; }
 
-        .feature-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-        }
+        .feature-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
 
         .feature-box {
             background: rgba(255,255,255,0.03);
@@ -210,23 +226,10 @@
             border: 1px solid rgba(255,255,255,0.1);
         }
 
-        /* --- SERVICES / EXPERTISE --- */
-        .services {
-            padding: 100px 10%;
-            background: #0f172a;
-            text-align: center;
-        }
-        
-        .section-title {
-            font-size: 2.5rem;
-            margin-bottom: 60px;
-        }
-
-        .cards-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 30px;
-        }
+        /* --- SERVICES --- */
+        .services { padding: 100px 10%; background: #0f172a; text-align: center; }
+        .section-title { font-size: 2.5rem; margin-bottom: 60px; }
+        .cards-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px; }
 
         .service-card {
             background: #020617;
@@ -258,26 +261,41 @@
             border-top: 1px solid rgba(255,255,255,0.05);
             color: var(--text-gray);
         }
-        .footer-content {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 40px;
-        }
+        .footer-content { display: flex; justify-content: space-between; margin-bottom: 40px; }
         .footer-info h4 { color: white; margin-bottom: 15px; font-size: 1.2rem; }
-        
-        .footer-bottom {
-            text-align: center;
-            padding-top: 20px;
-            border-top: 1px solid rgba(255,255,255,0.05);
-            font-size: 0.8rem;
+        .footer-bottom { text-align: center; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.05); font-size: 0.8rem; }
+
+        /* --- RESPONSIVE / MOBILE --- */
+        @media (max-width: 1024px) {
+            .hero h1 { font-size: 2.5rem; }
+            .showcase { grid-template-columns: 1fr; }
         }
 
         @media (max-width: 768px) {
-            .nav-links { display: none; } /* Za sad sakrij meni na mobilnom radi jednostavnosti */
-            .hero h1 { font-size: 2.5rem; }
-            .showcase { grid-template-columns: 1fr; }
-            .stats-bar { gap: 40px; }
-            .footer-content { flex-direction: column; gap: 30px; }
+            nav { padding: 15px 20px; }
+            
+            /* SAKRIVAMO linkove i login dugme na mobilnom */
+            .nav-link-item, 
+            .client-login-btn,
+            .lang-separator { 
+                display: none; 
+            }
+            
+            /* FORSIRAMO prikaz jezika da bude vidljiv */
+            .lang-switch {
+                display: flex !important;
+                border-left: none; 
+                padding-left: 0;
+            }
+
+            .hero { padding: 0 5%; justify-content: center; text-align: center; }
+            .hero-content { margin-top: 0; }
+            .cta-group { justify-content: center; }
+            
+            .stats-bar { gap: 30px; }
+            .footer-content { flex-direction: column; gap: 30px; text-align: center; }
+            
+            .showcase-img { order: -1; margin-bottom: 30px; }
         }
     </style>
 </head>
@@ -288,18 +306,20 @@
             <img src="https://i.postimg.cc/L6KLbH84/Pogon-io-LOGO-vertical.png" alt="Pogon.io">
             Pogon<span>.io</span>
         </a>
-	<div class="nav-links">
-    		<a href="#about">Ekspertiza</a>
-    		<a href="#solutions">Rešenja</a>
-    		<a href="#contact">Kontakt</a>
-    		<a href="portal.html" class="client-login-btn">Client Portal <i class="fas fa-lock"></i></a>
+        
+        <div class="nav-links">
+            <a href="#about" class="nav-link-item">Ekspertiza</a>
+            <a href="#solutions" class="nav-link-item">Rešenja</a>
+            <a href="#contact" class="nav-link-item">Kontakt</a>
+            
+            <a href="portal.html" class="client-login-btn">Client Portal <i class="fas fa-lock"></i></a>
     
-   	 <div class="lang-switch">
-        	<a href="index.html" class="active">SR</a>
-        	<span class="lang-separator">|</span>
-        	<a href="en.html">EN</a>
-    	</div>
-</div>
+            <div class="lang-switch">
+                <a href="index.html" class="active">SR</a>
+                <span class="lang-separator">|</span>
+                <a href="en.html">EN</a>
+            </div>
+        </div>
     </nav>
 
     <header class="hero">
