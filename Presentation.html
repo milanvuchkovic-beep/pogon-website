@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pogon.io | Enterprise Presentation</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            --primary: #2563eb;
+            --accent: #38bdf8;
+            --dark: #0f172a;
+            --glass: rgba(15, 23, 42, 0.6);
+            --border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+            background-color: var(--dark);
+            color: white;
+            overflow: hidden;
+            /* Koristimo tvoju AI sliku za pozadinu */
+            background-image: url('1763750360251.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
+
+        /* Overlay da tekst bude čitljiviji */
+        .backdrop {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(15, 23, 42, 0.85); /* Tamni filter */
+            z-index: 0;
+        }
+
+        /* Logo */
+        .logo-fixed {
+            position: fixed;
+            top: 30px; left: 40px;
+            z-index: 100;
+            height: 40px;
+            filter: brightness(0) invert(1); /* Bela verzija loga */
+        }
+
+        /* Navigation */
+        .controls {
+            position: fixed;
+            bottom: 30px; right: 40px;
+            z-index: 100;
+            display: flex; gap: 15px;
+        }
+        .btn-nav {
+            width: 50px; height: 50px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            color: white;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: 0.3s;
+            backdrop-filter: blur(5px);
+        }
+        .btn-nav:hover { background: var(--primary); border-color: var(--primary); }
+
+        /* Progress Bar */
+        .progress {
+            position: fixed; bottom: 0; left: 0; height: 4px; background: var(--primary);
+            width: 0%; transition: width 0.5s; z-index: 100;
+            box-shadow: 0 0 15px var(--primary);
+        }
+
+        /* SLIDES */
+        .slide-container {
+            position: relative;
+            width: 100vw; height: 100vh;
+            z-index: 1;
+        }
+
+        .slide {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            display: flex; flex-direction: column;
+            justify-content: center; align-items: center;
+            opacity: 0; pointer-events: none;
+            transform: scale(0.95) translateY(30px);
+            transition: all 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+            padding: 40px; box-sizing: border-box;
+        }
+
+        .slide.active {
+            opacity: 1; pointer-events: all;
+            transform: scale(1) translateY(0);
+        }
+
+        /* Typography */
+        h1 { font-size: 4rem; font-weight: 800; margin: 0 0 20px 0; line-height: 1.1; letter-spacing: -2px; text-align: center; }
+        h2 { font-size: 2.5rem; margin: 0 0 30px 0; color: var(--accent); text-align: center; }
+        p { font-size: 1.2rem; color: #cbd5e1; max-width: 700px; text-align: center; line-height: 1.6; margin-bottom: 40px; }
+        .tag {
+            background: rgba(37, 99, 235, 0.2); border: 1px solid var(--primary);
+            color: var(--accent); padding: 8px 16px; border-radius: 20px;
+            font-size: 0.9rem; font-weight: 600; text-transform: uppercase; letter-spacing: 2px;
+            margin-bottom: 20px;
+        }
+
+        /* SCREENSHOT FRAME (Laptop/Tablet look) */
+        .screen-frame {
+            background: #1e293b;
+            padding: 10px 10px 0 10px;
+            border-radius: 12px 12px 0 0;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            max-width: 80%;
+            max-height: 60vh;
+            border: 1px solid rgba(255,255,255,0.1);
+            overflow: hidden;
+            transform: perspective(1000px) rotateX(5deg);
+            transition: transform 0.5s;
+        }
+        .slide.active .screen-frame { transform: perspective(1000px) rotateX(0deg); }
+        
+        .screen-frame img {
+            width: 100%;
+            height: auto;
+            display: block;
+            border-radius: 8px 8px 0 0;
+        }
+        
+        .screen-caption {
+            margin-top: 20px;
+            font-size: 1rem;
+            color: #94a3b8;
+            font-style: italic;
+        }
+
+        /* Grid for Features */
+        .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; max-width: 1200px; }
+        .card {
+            background: rgba(255,255,255,0.05); border: var(--border);
+            padding: 30px; border-radius: 16px; backdrop-filter: blur(10px);
+        }
+        .card i { font-size: 2rem; color: var(--primary); margin-bottom: 15px; }
+        .card h3 { font-size: 1.3rem; margin: 0 0 10px 0; }
+        .card p { font-size: 0.95rem; text-align: left; margin: 0; }
+        
+        /* Video Frame */
+        .video-frame {
+            width: 80%;
+            max-width: 1000px;
+            aspect-ratio: 16/9;
+            background: #000;
+            border-radius: 12px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.6);
+            overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+        .video-frame iframe {
+            width: 100%; height: 100%; border: none;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="backdrop"></div>
+
+    <!-- LOGO -->
+    <img src="https://i.postimg.cc/L6KLbH84/Pogon-io-LOGO-vertical.png" class="logo-fixed" alt="Pogon.io">
+
+    <div class="slide-container">
+
+        <!-- SLIDE 1: HERO -->
+        <div class="slide active">
+            <div class="tag">Industry 4.0 MES Platform</div>
+            <h1>The Operating System<br>for Your Factory</h1>
+            <p>Connecting machines, people, and processes in real-time.</p>
+            
+            <!-- PLACEHOLDER ZA TVOJ VIDEO -->
+            <div class="video-frame">
+                <!-- Ovde ćeš ubaciti link svog videa (YouTube/Vimeo) ili lokalni fajl -->
+                <!-- Trenutno je placeholder tekst -->
+                <div style="display:flex; height:100%; align-items:center; justify-content:center; flex-direction:column; color:#666;">
+                    <i class="fas fa-play-circle" style="font-size: 4rem; margin-bottom:20px;"></i>
+                    <span>Insert Transformation Video Here</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 2: THE PROBLEM -->
+        <div class="slide">
+            <h2>The "Black Box" Problem</h2>
+            <div class="grid">
+                <div class="card">
+                    <i class="fas fa-eye-slash"></i>
+                    <h3>No Visibility</h3>
+                    <p>What is happening on machine #5 right now? Manual logs provide zero real-time insight.</p>
+                </div>
+                <div class="card">
+                    <i class="fas fa-clock"></i>
+                    <h3>Slow Reaction</h3>
+                    <p>Downtime is reported hours later. The opportunity to fix it is already lost.</p>
+                </div>
+                <div class="card">
+                    <i class="fas fa-file-excel"></i>
+                    <h3>Admin Chaos</h3>
+                    <p>Shift leaders spend 2 hours per day just copying data from paper to Excel.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 3: SOLUTION - STATION PORTAL -->
+        <div class="slide">
+            <div class="tag">For Operators</div>
+            <h2>1. The Station Kiosk</h2>
+            <p>Simple, touch-friendly interface for every machine. No training required.</p>
+            
+            <!-- PLACEHOLDER ZA TVOJU SLIKU -->
+            <div class="screen-frame">
+                <img src="screen_station.jpg" alt="Station Portal Screenshot" onerror="this.src='https://placehold.co/1200x800/1e293b/FFF?text=Place+Your+Screenshot+Here+(screen_station.jpg)'">
+            </div>
+            <div class="screen-caption">Supports NFC Login & One-Click Actions</div>
+        </div>
+
+        <!-- SLIDE 4: SOLUTION - SMART START -->
+        <div class="slide">
+            <div class="tag">Error Prevention</div>
+            <h2>2. Smart Job Start</h2>
+            <p>"Family Mold" logic prevents tool mismatches and ensures quality checks.</p>
+            
+            <!-- PLACEHOLDER ZA TVOJU SLIKU -->
+            <div class="screen-frame">
+                <img src="screen_start.jpg" alt="Start Process Screenshot" onerror="this.src='https://placehold.co/1200x800/1e293b/FFF?text=Place+Your+Screenshot+Here+(screen_start.jpg)'">
+            </div>
+            <div class="screen-caption">Digital Checklist & Supervisor Approval</div>
+        </div>
+
+        <!-- SLIDE 5: SOLUTION - DASHBOARD -->
+        <div class="slide">
+            <div class="tag">For Management</div>
+            <h2>3. Live Control Tower</h2>
+            <p>Complete factory status on a single screen. Accessible from anywhere.</p>
+            
+            <!-- PLACEHOLDER ZA TVOJU SLIKU -->
+            <div class="screen-frame">
+                <img src="screen_dashboard.jpg" alt="Dashboard Screenshot" onerror="this.src='https://placehold.co/1200x800/1e293b/FFF?text=Place+Your+Screenshot+Here+(screen_dashboard.jpg)'">
+            </div>
+            <div class="screen-caption">Real-time OEE, Scrap Rate & Status</div>
+        </div>
+
+        <!-- SLIDE 6: ARCHITECTURE -->
+        <div class="slide">
+            <h2>Cloud Native Architecture</h2>
+            <div class="grid" style="grid-template-columns: repeat(4, 1fr);">
+                <div class="card" style="text-align:center;">
+                    <i class="fas fa-tablet-alt"></i>
+                    <h3>Android Kiosks</h3>
+                    <p style="text-align:center;">Cheap & Robust</p>
+                </div>
+                <div class="card" style="text-align:center;">
+                    <i class="fas fa-cloud"></i>
+                    <h3>Google Cloud</h3>
+                    <p style="text-align:center;">Serverless Scale</p>
+                </div>
+                <div class="card" style="text-align:center;">
+                    <i class="fas fa-shield-alt"></i>
+                    <h3>RBAC Security</h3>
+                    <p style="text-align:center;">Role Based Access</p>
+                </div>
+                <div class="card" style="text-align:center;">
+                    <i class="fas fa-wifi"></i>
+                    <h3>Real-Time</h3>
+                    <p style="text-align:center;">Firestore DB</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 7: FUTURE -->
+        <div class="slide">
+            <div class="tag">Roadmap</div>
+            <h2>Ready for Tomorrow</h2>
+            <ul style="font-size: 1.5rem; line-height: 2; list-style: none; padding: 0; text-align: left;">
+                <li>🚀 <strong>Phase 4:</strong> AI Assistant (Natural Language Queries)</li>
+                <li>🔗 <strong>Phase 5:</strong> SAP / ERP Integration</li>
+                <li>📊 <strong>Phase 6:</strong> Predictive Maintenance</li>
+            </ul>
+        </div>
+
+        <!-- SLIDE 8: CONTACT -->
+        <div class="slide">
+            <h1>Let's Transform Your Factory.</h1>
+            <p>Pogon.io - Simple. Powerful. Real-time.</p>
+            <div style="margin-top: 50px;">
+                 <!-- Tvoj kontakt info ovde -->
+                 <h3 style="color:white;">Contact Us</h3>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Navigation -->
+    <div class="progress" id="progressBar"></div>
+    <div class="controls">
+        <button class="btn-nav" onclick="prevSlide()"><i class="fas fa-chevron-left"></i></button>
+        <button class="btn-nav" onclick="nextSlide()"><i class="fas fa-chevron-right"></i></button>
+    </div>
+
+    <script>
+        let current = 0;
+        const slides = document.querySelectorAll('.slide');
+        const bar = document.getElementById('progressBar');
+
+        function showSlide(index) {
+            if (index < 0) index = 0;
+            if (index >= slides.length) index = slides.length - 1;
+            
+            current = index;
+            
+            slides.forEach((s, i) => {
+                s.classList.remove('active');
+                s.style.transform = `scale(${i < current ? 1.1 : 0.9}) translateY(${i < current ? -50 : 50}px)`;
+                s.style.opacity = '0';
+                s.style.pointerEvents = 'none';
+            });
+
+            const active = slides[current];
+            active.classList.add('active');
+            active.style.transform = 'scale(1) translateY(0)';
+            active.style.opacity = '1';
+            active.style.pointerEvents = 'all';
+
+            bar.style.width = ((current + 1) / slides.length) * 100 + '%';
+        }
+
+        function nextSlide() { showSlide(current + 1); }
+        function prevSlide() { showSlide(current - 1); }
+
+        document.addEventListener('keydown', (e) => {
+            if(e.key === 'ArrowRight' || e.key === 'Space') nextSlide();
+            if(e.key === 'ArrowLeft') prevSlide();
+        });
+
+        showSlide(0);
+    </script>
+
+</body>
+</html>
