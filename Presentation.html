@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -24,31 +23,29 @@
             background-color: var(--dark);
             color: white;
             overflow: hidden;
-            /* Koristimo tvoju AI sliku za pozadinu */
+            /* PAŽNJA: Proveri da li se slika tačno ovako zove na GitHub-u */
             background-image: url('1763750360251.jpg');
             background-size: cover;
             background-position: center;
             background-attachment: fixed;
         }
 
-        /* Overlay da tekst bude čitljiviji */
         .backdrop {
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(15, 23, 42, 0.85); /* Tamni filter */
+            background: rgba(15, 23, 42, 0.85);
             z-index: 0;
         }
 
-        /* Logo */
         .logo-fixed {
             position: fixed;
             top: 30px; left: 40px;
             z-index: 100;
             height: 40px;
-            filter: brightness(0) invert(1); /* Bela verzija loga */
+            /* Ako je tvoj logo već beo, obriši liniju ispod. Ako je crn, ovo ga čini belim. */
+            filter: brightness(0) invert(1); 
         }
 
-        /* Navigation */
         .controls {
             position: fixed;
             bottom: 30px; right: 40px;
@@ -68,14 +65,12 @@
         }
         .btn-nav:hover { background: var(--primary); border-color: var(--primary); }
 
-        /* Progress Bar */
         .progress {
             position: fixed; bottom: 0; left: 0; height: 4px; background: var(--primary);
             width: 0%; transition: width 0.5s; z-index: 100;
             box-shadow: 0 0 15px var(--primary);
         }
 
-        /* SLIDES */
         .slide-container {
             position: relative;
             width: 100vw; height: 100vh;
@@ -98,7 +93,6 @@
             transform: scale(1) translateY(0);
         }
 
-        /* Typography */
         h1 { font-size: 4rem; font-weight: 800; margin: 0 0 20px 0; line-height: 1.1; letter-spacing: -2px; text-align: center; }
         h2 { font-size: 2.5rem; margin: 0 0 30px 0; color: var(--accent); text-align: center; }
         p { font-size: 1.2rem; color: #cbd5e1; max-width: 700px; text-align: center; line-height: 1.6; margin-bottom: 40px; }
@@ -109,7 +103,6 @@
             margin-bottom: 20px;
         }
 
-        /* SCREENSHOT FRAME (Laptop/Tablet look) */
         .screen-frame {
             background: #1e293b;
             padding: 10px 10px 0 10px;
@@ -138,7 +131,6 @@
             font-style: italic;
         }
 
-        /* Grid for Features */
         .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; max-width: 1200px; }
         .card {
             background: rgba(255,255,255,0.05); border: var(--border);
@@ -148,7 +140,7 @@
         .card h3 { font-size: 1.3rem; margin: 0 0 10px 0; }
         .card p { font-size: 0.95rem; text-align: left; margin: 0; }
         
-        /* Video Frame */
+        /* Video Frame Stilovi */
         .video-frame {
             width: 80%;
             max-width: 1000px;
@@ -159,8 +151,10 @@
             overflow: hidden;
             border: 1px solid rgba(255,255,255,0.2);
         }
-        .video-frame iframe {
+        .video-frame iframe, 
+        .video-frame video {
             width: 100%; height: 100%; border: none;
+            object-fit: cover; /* Ovo osigurava da se video lepo razvuče */
         }
 
     </style>
@@ -169,27 +163,23 @@
 
     <div class="backdrop"></div>
 
-    <!-- LOGO -->
     <img src="Pogon_io_LOGO_vertical.png" class="logo-fixed" alt="Pogon.io">
 
     <div class="slide-container">
 
-        <!-- SLIDE 1: HERO -->
         <div class="slide active">
             <div class="tag">Industry 4.0 MES Platform</div>
             <h1>The Operating System<br>for Your Factory</h1>
             <p>Connecting machines, people, and processes in real-time.</p>
-
-            <div class="video-frame">
-                <div style="display:flex; height:100%; align-items:center; justify-content:center; flex-direction:column; color:#666;">
-                    <i class="fas fa-play-circle" style="font-size: 4rem; margin-bottom:20px;"></i>
-                    <span>"VideoPresentation.mp4"</span>
-                </div>
-            </div>
             
+            <div class="video-frame">
+                <video controls autoplay muted>
+                    <source src="VideoPresentation.mp4" type="video/mp4">
+                    Tvoj pretraživač ne podržava video tag.
+                </video>
+            </div>
         </div>
 
-        <!-- SLIDE 2: THE PROBLEM -->
         <div class="slide">
             <h2>The "Black Box" Problem</h2>
             <div class="grid">
@@ -211,46 +201,39 @@
             </div>
         </div>
 
-        <!-- SLIDE 3: SOLUTION - STATION PORTAL -->
         <div class="slide">
             <div class="tag">For Operators</div>
             <h2>1. The Station Kiosk</h2>
             <p>Simple, touch-friendly interface for every machine. No training required.</p>
             
-            <!-- PLACEHOLDER ZA TVOJU SLIKU -->
             <div class="screen-frame">
-                <img src="screen_station.jpg" alt="Station Portal Screenshot" onerror="this.src='https://placehold.co/1200x800/1e293b/FFF?text=Place+Your+Screenshot+Here+(screen_station.jpg)'">
+                <img src="screen_station.jpg" alt="Station Portal Screenshot" onerror="this.src='https://placehold.co/1200x800/1e293b/FFF?text=Check+Filename:+screen_station.jpg'">
             </div>
             <div class="screen-caption">Supports NFC Login & One-Click Actions</div>
         </div>
 
-        <!-- SLIDE 4: SOLUTION - SMART START -->
         <div class="slide">
             <div class="tag">Error Prevention</div>
             <h2>2. Smart Job Start</h2>
             <p>"Family Mold" logic prevents tool mismatches and ensures quality checks.</p>
             
-            <!-- PLACEHOLDER ZA TVOJU SLIKU -->
             <div class="screen-frame">
-                <img src="screen_start.jpg" alt="Start Process Screenshot" onerror="this.src='https://placehold.co/1200x800/1e293b/FFF?text=Place+Your+Screenshot+Here+(screen_start.jpg)'">
+                <img src="screen_start.jpg" alt="Start Process Screenshot" onerror="this.src='https://placehold.co/1200x800/1e293b/FFF?text=Check+Filename:+screen_start.jpg'">
             </div>
             <div class="screen-caption">Digital Checklist & Supervisor Approval</div>
         </div>
 
-        <!-- SLIDE 5: SOLUTION - DASHBOARD -->
         <div class="slide">
             <div class="tag">For Management</div>
             <h2>3. Live Control Tower</h2>
             <p>Complete factory status on a single screen. Accessible from anywhere.</p>
             
-            <!-- PLACEHOLDER ZA TVOJU SLIKU -->
             <div class="screen-frame">
-                <img src="screen_dashboard.jpg" alt="Dashboard Screenshot" onerror="this.src='https://placehold.co/1200x800/1e293b/FFF?text=Place+Your+Screenshot+Here+(screen_dashboard.jpg)'">
+                <img src="screen_dashboard.jpg" alt="Dashboard Screenshot" onerror="this.src='https://placehold.co/1200x800/1e293b/FFF?text=Check+Filename:+screen_dashboard.jpg'">
             </div>
             <div class="screen-caption">Real-time OEE, Scrap Rate & Status</div>
         </div>
 
-        <!-- SLIDE 6: ARCHITECTURE -->
         <div class="slide">
             <h2>Cloud Native Architecture</h2>
             <div class="grid" style="grid-template-columns: repeat(4, 1fr);">
@@ -277,7 +260,6 @@
             </div>
         </div>
 
-        <!-- SLIDE 7: FUTURE -->
         <div class="slide">
             <div class="tag">Roadmap</div>
             <h2>Ready for Tomorrow</h2>
@@ -288,19 +270,16 @@
             </ul>
         </div>
 
-        <!-- SLIDE 8: CONTACT -->
         <div class="slide">
             <h1>Let's Transform Your Factory.</h1>
             <p>Pogon.io - Simple. Powerful. Real-time.</p>
             <div style="margin-top: 50px;">
-                 <!-- Tvoj kontakt info ovde -->
                  <h3 style="color:white;">Contact Us</h3>
             </div>
         </div>
 
     </div>
 
-    <!-- Navigation -->
     <div class="progress" id="progressBar"></div>
     <div class="controls">
         <button class="btn-nav" onclick="prevSlide()"><i class="fas fa-chevron-left"></i></button>
@@ -346,7 +325,6 @@
     </script>
 
 </body>
-
 </html>
 
 
