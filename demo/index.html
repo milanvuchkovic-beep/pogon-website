@@ -867,6 +867,8 @@
         tourStep: 0,
         scenarioRunning: false,
         scenarioTimeouts: [],
+        scenarioStartTs: null,
+        scenarioStepLabel: "",
         now: Date.now(),
         schedule: buildWeeklySchedule(new Date()),
         active: new Map(), // machineId -> { startTs, status: "ZASTOJ"|"ODZIV", responseTs? }
@@ -903,6 +905,12 @@
       const toastRoot = document.getElementById("toastRoot");
       const alarmRoot = document.getElementById("alarmRoot");
       let alarmTimeout = null;
+      let alarmKeyHandler = null;
+      const alarmAudio = new Audio("./alarm-siren.mp3");
+      alarmAudio.preload = "auto";
+      alarmAudio.loop = true;
+      alarmAudio.volume = 0.55;
+      let alarmFadeTimer = null;
 
       function el(tag, attrs = {}, children = []){
         const n = document.createElement(tag);
@@ -1032,6 +1040,16 @@
             state.tourStep = 0;
             rerender();
           }}, "Vodič"),
+          state.scenarioRunning ? el("div",{class:"pill", id:"scenarioPill", style:"border-color: rgba(59,130,246,0.35); background: linear-gradient(145deg, rgba(59,130,246,0.08), rgba(139,92,246,0.06));"}, [
+            el("span",{style:"font-weight:950; color:#334155"}, "⏱ Scenario:"),
+            el("strong",{id:"scenarioTimer"}, "00:00"),
+            el("span",{id:"scenarioStep", class:"muted", style:"max-width:240px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;"}, state.scenarioStepLabel || "u toku"),
+            el("button",{class:"btn secondary", style:"padding:6px 10px; border-radius:999px;", onClick:()=>{
+              stopScenario();
+              toast("warn", "Scenario prekinut", "Vratili smo se na ručni režim.");
+              rerender();
+            }}, "Izađi")
+          ]) : null,
           el("button",{class:"btn secondary", onClick:()=>{
             resetPrikaza();
           }}, "Reset prikaza"),
@@ -1085,17 +1103,50 @@
         // Remove any existing alarm and restart timer
         alarmRoot.innerHTML = "";
         if (alarmTimeout) clearTimeout(alarmTimeout);
+        if (alarmFadeTimer) { clearInterval(alarmFadeTimer); alarmFadeTimer = null; }
+
+        // Start sound (may be blocked if not initiated by a user gesture)
+        try {
+          alarmAudio.currentTime = 0;
+          alarmAudio.volume = 0.55;
+          const p = alarmAudio.play();
+          if (p && typeof p.catch === "function") {
+            p.catch(() => {
+              // Browser may block autoplay; keep silent in that case.
+            });
+          }
+        } catch (e) {}
 
         const close = () => {
           alarmRoot.innerHTML = "";
           if (alarmTimeout) clearTimeout(alarmTimeout);
           alarmTimeout = null;
-          window.removeEventListener("keydown", onKey);
+          if (alarmKeyHandler) window.removeEventListener("keydown", alarmKeyHandler);
+          alarmKeyHandler = null;
+          // Fade out quickly then stop
+          try {
+            const startVol = alarmAudio.volume ?? 0.55;
+            const steps = 10;
+            let i = 0;
+            if (alarmFadeTimer) clearInterval(alarmFadeTimer);
+            alarmFadeTimer = setInterval(() => {
+              i += 1;
+              const v = startVol * (1 - i / steps);
+              alarmAudio.volume = Math.max(0, v);
+              if (i >= steps) {
+                clearInterval(alarmFadeTimer);
+                alarmFadeTimer = null;
+                alarmAudio.pause();
+              }
+            }, 30);
+          } catch (e) {
+            try { alarmAudio.pause(); } catch (_) {}
+          }
         };
-        const onKey = (e) => {
+        alarmKeyHandler = (e) => {
           if (e.key === "Escape") close();
         };
-        window.addEventListener("keydown", onKey);
+        window.addEventListener("keydown", alarmKeyHandler);
 
         const overlay = el("div",{class:"alarm-overlay", role:"alert", onClick:close}, [
           el("div",{class:"alarm-card", onClick:(e)=>e.stopPropagation()}, [
@@ -1108,6 +1159,20 @@
 
         alarmRoot.appendChild(overlay);
         alarmTimeout = setTimeout(close, 5000);
+      }
+
+      function hideAlarm(){
+        alarmRoot.innerHTML = "";
+        if (alarmTimeout) clearTimeout(alarmTimeout);
+        alarmTimeout = null;
+        if (alarmKeyHandler) window.removeEventListener("keydown", alarmKeyHandler);
+        alarmKeyHandler = null;
+        try {
+          if (alarmFadeTimer) { clearInterval(alarmFadeTimer); alarmFadeTimer = null; }
+          alarmAudio.pause();
+          alarmAudio.currentTime = 0;
+          alarmAudio.volume = 0.55;
+        } catch (e) {}
       }
 
       function actionPrijava(machineId){
@@ -1153,10 +1218,33 @@
         return id;
       }
 
+      function fmtMMSS(ms){
+        const s = Math.max(0, Math.floor(ms / 1000));
+        const mm = pad2(Math.floor(s / 60));
+        const ss = pad2(s % 60);
+        return `${mm}:${ss}`;
+      }
+
+      function setScenarioStep(label){
+        state.scenarioStepLabel = label;
+        // update label without full rerender (if pill exists)
+        const stepEl = document.getElementById("scenarioStep");
+        if (stepEl) stepEl.textContent = label;
+      }
+
+      function updateScenarioTick(){
+        if (!state.scenarioRunning || !state.scenarioStartTs) return;
+        const t = document.getElementById("scenarioTimer");
+        if (t) t.textContent = fmtMMSS(Date.now() - state.scenarioStartTs);
+      }
+
       function stopScenario(){
         for (const id of state.scenarioTimeouts) clearTimeout(id);
         state.scenarioTimeouts = [];
         state.scenarioRunning = false;
+        state.scenarioStartTs = null;
+        state.scenarioStepLabel = "";
+        hideAlarm();
       }
 
       function resetPrikaza(){
@@ -1183,6 +1271,8 @@
         if (state.scenarioRunning) return;
         state.scenarioRunning = true;
         state.scenarioTimeouts = [];
+        state.scenarioStartTs = Date.now();
+        state.scenarioStepLabel = "Priprema…";
 
         const picks = [];
         const pool = [...DEMO.machines];
@@ -1191,32 +1281,61 @@
           picks.push(pool.splice(idx, 1)[0]);
         }
 
-        toast("warn", "Scenario pokrenut", `Automatski tok na radnim stanicama ${picks.join(", ")} (Prijava → Odziv → Kraj). Tempo je usporen radi jasnog prikaza.`);
+        toast("warn", "Scenario pokrenut", `Tok na radnim stanicama ${picks.join(", ")} (Prijava → Odziv → Kraj). Pauze su namerno duže radi jasnog prikaza.`);
         // Ensure we're on Uživo for the best visual effect
         state.tab = "uzivo";
         rerender();
 
-        // Usporeni scenario (bolje za prezentaciju)
-        // Station 1
-        scheduleTimeout(()=>actionPrijava(picks[0]), 900);
-        scheduleTimeout(()=>actionOdziv(picks[0]), 6500);
-        scheduleTimeout(()=>actionKraj(picks[0]), 15000);
+        // Prezentacioni scenario:
+        // - posle svake PRIJAVE čekamo da istekne crveni overlay (5s) + još malo da se vidi tabela
+        // - posle ODZIVA ostavljamo vremena da se pročita toast i da se vidi promena statusa
+        // - između događaja ostavljamo “prazan hod” da posmatrač isprati
+        let t = 800;
 
-        // Station 2 (sa razmakom)
-        scheduleTimeout(()=>actionPrijava(picks[1]), 5200);
-        scheduleTimeout(()=>actionOdziv(picks[1]), 12500);
-        scheduleTimeout(()=>actionKraj(picks[1]), 22500);
+        // 1) Prijava A
+        scheduleTimeout(()=>{ setScenarioStep(`Prijava: Radna stanica ${picks[0]}`); actionPrijava(picks[0]); }, t);
+        t += 7000; // 5s overlay + ~2s za tabelu/karticu
 
-        // Station 3 (poslednja, najduža)
-        scheduleTimeout(()=>actionPrijava(picks[2]), 10800);
-        scheduleTimeout(()=>actionOdziv(picks[2]), 21000);
-        scheduleTimeout(()=>actionKraj(picks[2]), 33000);
+        // 2) Prijava B
+        scheduleTimeout(()=>{ setScenarioStep(`Prijava: Radna stanica ${picks[1]}`); actionPrijava(picks[1]); }, t);
+        t += 7000;
+
+        // 3) Odziv A
+        scheduleTimeout(()=>{ setScenarioStep(`Odziv: Radna stanica ${picks[0]}`); actionOdziv(picks[0]); }, t);
+        t += 5000;
+
+        // 4) Prijava C
+        scheduleTimeout(()=>{ setScenarioStep(`Prijava: Radna stanica ${picks[2]}`); actionPrijava(picks[2]); }, t);
+        t += 7000;
+
+        // 5) Odziv B
+        scheduleTimeout(()=>{ setScenarioStep(`Odziv: Radna stanica ${picks[1]}`); actionOdziv(picks[1]); }, t);
+        t += 5000;
+
+        // 6) Kraj A
+        scheduleTimeout(()=>{ setScenarioStep(`Kraj: Radna stanica ${picks[0]}`); actionKraj(picks[0]); }, t);
+        t += 5000;
+
+        // 7) Odziv C
+        scheduleTimeout(()=>{ setScenarioStep(`Odziv: Radna stanica ${picks[2]}`); actionOdziv(picks[2]); }, t);
+        t += 5000;
+
+        // 8) Kraj B
+        scheduleTimeout(()=>{ setScenarioStep(`Kraj: Radna stanica ${picks[1]}`); actionKraj(picks[1]); }, t);
+        t += 5000;
+
+        // 9) Kraj C
+        scheduleTimeout(()=>{ setScenarioStep(`Kraj: Radna stanica ${picks[2]}`); actionKraj(picks[2]); }, t);
+        t += 3500;
 
         scheduleTimeout(()=>{
           state.scenarioRunning = false;
           state.scenarioTimeouts = [];
+          state.scenarioStartTs = null;
+          state.scenarioStepLabel = "";
           toast("success", "Scenario završen", "Svi događaji su zatvoreni. Pogledaj tabelu 24h i Statistiku za rezultate.");
-        }, 35000);
+          rerender();
+        }, t);
       }
 
       function renderMiniActions(){
@@ -2058,17 +2177,18 @@
           const ss = pad2(diffSec%60);
           t.textContent = `${mm}:${ss}`;
         }
+
+        updateScenarioTick();
       }
 
       // tick (bez full re-render da dropdown ne "puca")
       setInterval(()=>{
         state.now = Date.now();
         updateUzivoTick();
+        updateScenarioTick();
       }, 1000);
 
       rerender();
     </script>
   </body>
 </html>
-
-
