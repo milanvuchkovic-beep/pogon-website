@@ -842,15 +842,7 @@
             rerender();
           }}, "Vodič"),
           el("button",{class:"btn secondary", onClick:()=>{
-            // reset prikaza na početno stanje
-            state.active.clear();
-            initHistoryFromHistorical();
-            state.schedule = buildWeeklySchedule(new Date());
-            state.selectedManager = "Svi";
-            state.showAbout = false;
-            state.showTour = false;
-            stopScenario();
-            rerender();
+            resetPrikaza();
           }}, "Reset prikaza"),
           el("button",{class:"btn danger", onClick:()=>{
             state.loggedIn = false;
@@ -944,6 +936,26 @@
         for (const id of state.scenarioTimeouts) clearTimeout(id);
         state.scenarioTimeouts = [];
         state.scenarioRunning = false;
+      }
+
+      function resetPrikaza(){
+        try {
+          stopScenario();
+          state.active.clear();
+          initHistoryFromHistorical();
+          state.schedule = buildWeeklySchedule(new Date());
+          state.selectedManager = "Svi";
+          state.showAbout = false;
+          state.showTour = false;
+          state.tourStep = 0;
+          state.tab = "uzivo";
+          toast("success", "Prikaz resetovan", "Sistem je vraćen na početno stanje.");
+          rerender();
+        } catch (e) {
+          try { rerender(); } catch (_) {}
+          alert("Greška pri resetovanju prikaza.");
+          console.error(e);
+        }
       }
 
       function runScenario(){
