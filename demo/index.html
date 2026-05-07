@@ -637,11 +637,66 @@
         flex-wrap:wrap;
       }
       .tour-actions .left, .tour-actions .right{display:flex; gap:8px; flex-wrap:wrap;}
+
+      /* Fullscreen alarm overlay */
+      .alarm-overlay{
+        position:fixed;
+        inset:0;
+        z-index:3000;
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        padding:18px;
+        background: radial-gradient(circle at 30% 20%, rgba(255,255,255,0.16), transparent 55%),
+                    radial-gradient(circle at 80% 70%, rgba(0,0,0,0.12), transparent 55%),
+                    linear-gradient(135deg, rgba(239,68,68,0.96), rgba(185,28,28,0.96));
+        backdrop-filter: blur(2px);
+        animation: alarmIn 140ms ease-out;
+      }
+      @keyframes alarmIn{
+        from { opacity: 0; transform: scale(1.01); }
+        to { opacity: 1; transform: scale(1); }
+      }
+      .alarm-card{
+        width:min(920px, 100%);
+        border-radius:18px;
+        border:1px solid rgba(255,255,255,0.25);
+        background: rgba(2,6,23,0.22);
+        box-shadow: 0 40px 70px rgba(2,6,23,0.40);
+        padding:18px;
+        color:white;
+      }
+      .alarm-kicker{
+        font-weight:950;
+        letter-spacing:3px;
+        text-transform:uppercase;
+        opacity:0.95;
+        font-size:0.95rem;
+      }
+      .alarm-title{
+        margin:10px 0 0 0;
+        font-weight:1000;
+        font-size: clamp(2.2rem, 5vw, 4.2rem);
+        letter-spacing:0.2px;
+        line-height:1.05;
+      }
+      .alarm-sub{
+        margin-top:10px;
+        font-size:1.05rem;
+        line-height:1.4;
+        opacity:0.95;
+      }
+      .alarm-hint{
+        margin-top:14px;
+        font-size:0.95rem;
+        opacity:0.88;
+      }
     </style>
   </head>
   <body>
     <div id="root"></div>
     <div id="toastRoot" class="toast-wrap" aria-live="polite"></div>
+    <div id="alarmRoot"></div>
     <script>
       // -----------------------------
       // Konfiguracija (primer podataka)
@@ -824,6 +879,8 @@
       // -----------------------------
       const root = document.getElementById("root");
       const toastRoot = document.getElementById("toastRoot");
+      const alarmRoot = document.getElementById("alarmRoot");
+      let alarmTimeout = null;
 
       function el(tag, attrs = {}, children = []){
         const n = document.createElement(tag);
@@ -981,8 +1038,38 @@
         setTimeout(()=>{ node.remove(); }, 3550);
       }
 
+      function showAlarm(machineId){
+        // Remove any existing alarm and restart timer
+        alarmRoot.innerHTML = "";
+        if (alarmTimeout) clearTimeout(alarmTimeout);
+
+        const close = () => {
+          alarmRoot.innerHTML = "";
+          if (alarmTimeout) clearTimeout(alarmTimeout);
+          alarmTimeout = null;
+          window.removeEventListener("keydown", onKey);
+        };
+        const onKey = (e) => {
+          if (e.key === "Escape") close();
+        };
+        window.addEventListener("keydown", onKey);
+
+        const overlay = el("div",{class:"alarm-overlay", role:"alert", onClick:close}, [
+          el("div",{class:"alarm-card", onClick:(e)=>e.stopPropagation()}, [
+            el("div",{class:"alarm-kicker"}, "ZASTOJ"),
+            el("div",{class:"alarm-title"}, `Radna stanica ${machineId}`),
+            el("div",{class:"alarm-sub"}, "Prijava je evidentirana. U uživo prikazu se pojavljuje aktivna kartica i počinje merenje trajanja."),
+            el("div",{class:"alarm-hint"}, "Klik bilo gde ili ESC za zatvaranje (automatski nestaje za 5s).")
+          ])
+        ]);
+
+        alarmRoot.appendChild(overlay);
+        alarmTimeout = setTimeout(close, 5000);
+      }
+
       function actionPrijava(machineId){
         ensureActive(machineId);
+        showAlarm(machineId);
         toast("danger", "Prijava zastoja", `Radna stanica ${machineId} je u statusu ZASTOJ. U “Uživo” delu se pojavljuje aktivna kartica i počinje tajmer.`);
         rerender();
       }
