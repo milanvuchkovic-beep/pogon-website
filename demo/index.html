@@ -1,0 +1,1671 @@
+<!doctype html>
+<html lang="sr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Dashboard – Zastoji</title>
+    <style>
+      :root{
+        --bg:#f8fafc;
+        --text:#0f172a;
+        --muted:#64748b;
+        --border:#e2e8f0;
+        --card1:#ffffff;
+        --card2:#f3f4f6;
+        --blue1:#3b82f6;
+        --blue2:#2563eb;
+        --purple:#8b5cf6;
+        --green1:#10b981;
+        --green2:#059669;
+        --amber1:#f59e0b;
+        --amber2:#d97706;
+        --red1:#ef4444;
+        --red2:#b91c1c;
+        --shadow:0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+      }
+      *{box-sizing:border-box}
+      html,body{height:100%}
+      body{
+        margin:0;
+        background:var(--bg);
+        color:var(--text);
+        font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Noto Sans", "Liberation Sans", sans-serif;
+      }
+      a{color:inherit}
+      button,input,select{
+        font:inherit;
+      }
+      .app-container{
+        max-width:1440px;
+        margin:0 auto;
+        padding:20px;
+      }
+      header{
+        display:flex;
+        justify-content:space-between;
+        align-items:center;
+        gap:12px;
+        padding:14px 16px;
+        border:1px solid rgba(255,255,255,0.5);
+        border-radius:12px;
+        box-shadow: var(--shadow);
+        background: linear-gradient(145deg, var(--card1), var(--card2));
+      }
+      .header-left{
+        display:flex;
+        align-items:center;
+        gap:12px;
+        min-width: 0;
+      }
+      .header-logo{
+        height: 54px;
+        width: auto;
+        object-fit: contain;
+        opacity: 0.92;
+        filter: drop-shadow(0 8px 10px rgba(2,6,23,0.10));
+      }
+      @media (max-width: 900px){
+        .header-logo{ height: 44px; }
+      }
+      .brand{
+        display:flex;
+        flex-direction:column;
+        gap:2px;
+        min-width:0;
+      }
+      .brand h2{
+        margin:0;
+        font-weight:800;
+        letter-spacing:0.2px;
+        background: -webkit-linear-gradient(45deg, var(--blue1), var(--purple));
+        -webkit-background-clip:text;
+        -webkit-text-fill-color:transparent;
+        white-space:nowrap;
+        overflow:hidden;
+        text-overflow:ellipsis;
+      }
+      .brand .subtitle{
+        font-size:0.85rem;
+        color:var(--muted);
+        white-space:nowrap;
+        overflow:hidden;
+        text-overflow:ellipsis;
+      }
+      .tabs{
+        display:flex;
+        gap:6px;
+        flex-wrap:wrap;
+      }
+      .tab-btn{
+        border:1px solid var(--border);
+        background:white;
+        color:var(--muted);
+        padding:8px 12px;
+        border-radius:10px;
+        cursor:pointer;
+        font-weight:700;
+      }
+      .tab-btn.active{
+        background: linear-gradient(90deg, var(--blue1) 0%, var(--blue2) 100%);
+        border-color:transparent;
+        color:white;
+        box-shadow: 0 10px 15px -3px rgba(59,130,246,0.25);
+      }
+      .header-right{
+        display:flex;
+        align-items:center;
+        gap:10px;
+        flex-wrap:wrap;
+        justify-content:flex-end;
+      }
+      .pill{
+        display:inline-flex;
+        align-items:center;
+        gap:8px;
+        padding:8px 12px;
+        border-radius:999px;
+        border:1px solid var(--border);
+        background:white;
+        color:var(--muted);
+        font-size:0.9rem;
+        max-width: 100%;
+      }
+      .pill strong{color:var(--text)}
+      .card{
+        background: linear-gradient(145deg, var(--card1), var(--card2));
+        box-shadow: var(--shadow);
+        border-radius:12px;
+        border:1px solid rgba(255,255,255,0.5);
+      }
+      main{padding-top:14px}
+      .row{
+        display:flex;
+        gap:14px;
+        align-items:stretch;
+        flex-wrap:wrap;
+      }
+      .grow{flex:1}
+      .panel{
+        padding:16px;
+      }
+      .panel h3{
+        margin:0 0 12px 0;
+        font-size:1rem;
+        color:var(--muted);
+        text-transform:uppercase;
+        letter-spacing:1px;
+      }
+      .btn{
+        border:none;
+        cursor:pointer;
+        border-radius:10px;
+        padding:10px 12px;
+        font-weight:800;
+      }
+      .btn.primary{background: linear-gradient(90deg, var(--blue1) 0%, var(--blue2) 100%); color:white}
+      .btn.success{background: linear-gradient(90deg, var(--green1) 0%, var(--green2) 100%); color:white}
+      .btn.warn{background: linear-gradient(90deg, var(--amber1) 0%, var(--amber2) 100%); color:white}
+      .btn.danger{background: linear-gradient(90deg, var(--red1) 0%, var(--red2) 100%); color:white}
+      .btn.secondary{background:#cbd5e1; color:#334155}
+      .btn:disabled{opacity:.6; cursor:not-allowed}
+      .mini-actions{
+        display:flex;
+        gap:8px;
+        flex-wrap:wrap;
+        align-items:center;
+      }
+      .mini-actions .btn{
+        padding:8px 10px;
+        border-radius:999px;
+        font-size:0.9rem;
+      }
+      .field{
+        display:flex;
+        gap:10px;
+        align-items:center;
+        flex-wrap:wrap;
+      }
+      label{font-size:.9rem; color:var(--muted); font-weight:700}
+      input,select{
+        padding:10px 10px;
+        border-radius:10px;
+        border:1px solid var(--border);
+        background:white;
+        min-width: 200px;
+      }
+      .muted{color:var(--muted)}
+      .login-screen{
+        min-height: 100vh;
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        padding:20px;
+      }
+      .login-box{
+        width: min(420px, 100%);
+        padding:18px;
+      }
+      .login-box h1{
+        margin:0;
+        font-weight:900;
+        letter-spacing:0.2px;
+        background: -webkit-linear-gradient(45deg, var(--blue1), var(--purple));
+        -webkit-background-clip:text;
+        -webkit-text-fill-color:transparent;
+      }
+      .two-col{
+        display:grid;
+        grid-template-columns: 1fr 1fr;
+        gap:14px;
+      }
+      .kpi-cards{
+        display:grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap:14px;
+        margin: 14px 0;
+      }
+      .kpi-card{padding:14px}
+      .kpi-label{font-size:0.85rem; color:var(--muted); text-transform:uppercase; letter-spacing:1px; font-weight:800}
+      .kpi-value{font-size:2rem; font-weight:900; margin-top:10px}
+      .kpi-sub{font-size:.85rem; color:var(--muted)}
+      table{
+        width:100%;
+        border-collapse:collapse;
+      }
+      th,td{
+        padding:10px 12px;
+        border-top:1px solid var(--border);
+        text-align:left;
+        font-size:0.95rem;
+      }
+      th{
+        background: #f1f5f9;
+        color:#334155;
+        font-size:0.85rem;
+        text-transform:uppercase;
+        letter-spacing:1px;
+      }
+      .badge{
+        display:inline-flex;
+        align-items:center;
+        padding:4px 10px;
+        border-radius:999px;
+        font-weight:900;
+        font-size:0.8rem;
+      }
+      .badge.active{background:#fee2e2; color:var(--red1)}
+      .badge.done{background:#dcfce7; color:#166534}
+      .shift-banner{
+        display:flex;
+        justify-content:space-between;
+        align-items:center;
+        gap:14px;
+        flex-wrap:wrap;
+        padding:16px;
+        border-radius:12px;
+        background: linear-gradient(145deg, #e0f2fe, #bae6fd);
+        box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+      }
+      .shift-k{
+        color:#0369a1;
+        font-weight:900;
+        text-transform:uppercase;
+        font-size:0.8rem;
+        letter-spacing:1px;
+      }
+      .shift-v{
+        font-size:1.8rem;
+        font-weight:900;
+        color:#0c4a6e;
+        margin-top:6px;
+      }
+      .active-panel{
+        display:flex;
+        gap:12px;
+        flex-wrap:wrap;
+        align-items:stretch;
+      }
+      .machine-card{
+        width: 220px;
+        height: 160px;
+        border-radius:12px;
+        padding:14px;
+        display:flex;
+        flex-direction:column;
+        justify-content:space-between;
+        color:white;
+        box-shadow: 0 20px 25px -5px rgba(239, 68, 68, 0.25), 0 10px 10px -5px rgba(239, 68, 68, 0.15);
+      }
+      .machine-card.zastoj{background: linear-gradient(135deg, var(--red1) 0%, var(--red2) 100%)}
+      .machine-card.odziv{
+        background: linear-gradient(135deg, var(--amber1) 0%, var(--amber2) 100%);
+        box-shadow: 0 20px 25px -5px rgba(245, 158, 11, 0.25), 0 10px 10px -5px rgba(245, 158, 11, 0.15);
+      }
+      .card-header{font-weight:900; letter-spacing:2px; opacity:.9; font-size:.9rem}
+      .card-id{font-weight:900; font-size:2.2rem; line-height:1}
+      .card-status{font-weight:900; letter-spacing:1px}
+      .card-timer{font-weight:900; font-size:1.2rem; opacity:.95}
+      .bar-list{display:flex; flex-direction:column; gap:10px}
+      .bar-item{display:flex; align-items:center; gap:10px}
+      .bar-name{width:120px; font-weight:800; color:#334155}
+      .bar-wrap{flex:1; height:12px; border-radius:999px; background:#e2e8f0; overflow:hidden}
+      .bar-fill{height:100%; border-radius:999px; background: linear-gradient(90deg, var(--blue1), var(--blue2))}
+      .bar-val{width:60px; text-align:right; color:var(--muted); font-weight:800; font-size:.9rem}
+      .notice{
+        font-size:.9rem;
+        color:var(--muted);
+        line-height:1.4;
+      }
+      .danger-outline{
+        border:1px dashed rgba(239,68,68,0.45);
+        background: rgba(254,226,226,0.35);
+        padding:10px 12px;
+        border-radius:12px;
+      }
+
+      @media (max-width: 900px){
+        .kpi-cards{grid-template-columns: 1fr; }
+        .two-col{grid-template-columns: 1fr;}
+        header{flex-direction:column; align-items:stretch}
+        .header-right{justify-content:space-between}
+        input,select{min-width: 160px; width:100%}
+        .machine-card{width:100%; max-width: 320px}
+      }
+
+      /* About / modal */
+      .modal-backdrop{
+        position:fixed;
+        inset:0;
+        background:rgba(2,6,23,0.55);
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        padding:18px;
+        z-index:2000;
+      }
+      .modal{
+        width:min(980px, 100%);
+        max-height:min(86vh, 860px);
+        overflow:auto;
+        border-radius:16px;
+        border:1px solid rgba(255,255,255,0.14);
+        background: linear-gradient(145deg, rgba(255,255,255,0.98), rgba(248,250,252,0.96));
+        box-shadow: 0 30px 60px rgba(2,6,23,0.35);
+      }
+      .modal-header{
+        padding:16px 16px 10px 16px;
+        display:flex;
+        align-items:flex-start;
+        justify-content:space-between;
+        gap:12px;
+        position:sticky;
+        top:0;
+        background: linear-gradient(145deg, rgba(255,255,255,0.98), rgba(248,250,252,0.96));
+        border-bottom:1px solid var(--border);
+        border-top-left-radius:16px;
+        border-top-right-radius:16px;
+        z-index:1;
+      }
+      .modal-title{
+        margin:0;
+        font-weight:950;
+        letter-spacing:.2px;
+        font-size:1.2rem;
+        color:#0f172a;
+      }
+      .modal-subtitle{
+        margin-top:6px;
+        color:var(--muted);
+        font-size:.95rem;
+        line-height:1.4;
+      }
+      .modal-body{padding:16px}
+      .hero{
+        display:grid;
+        grid-template-columns: 1.1fr 0.9fr;
+        gap:14px;
+        align-items:stretch;
+      }
+      .hero-card{
+        border-radius:14px;
+        border:1px solid rgba(255,255,255,0.5);
+        background: linear-gradient(135deg, rgba(59,130,246,0.16), rgba(139,92,246,0.12));
+        box-shadow: 0 15px 25px rgba(59,130,246,0.08);
+        padding:14px;
+      }
+      .hero-bullets{
+        margin:10px 0 0 0;
+        padding-left:18px;
+        color:#334155;
+      }
+      .hero-bullets li{margin:6px 0}
+      .feature-grid{
+        display:grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap:12px;
+        margin-top:14px;
+      }
+      .feature{
+        border-radius:14px;
+        border:1px solid rgba(255,255,255,0.55);
+        background: linear-gradient(145deg, var(--card1), var(--card2));
+        box-shadow: var(--shadow);
+        padding:12px;
+      }
+      .feature h4{
+        margin:0;
+        font-size:0.95rem;
+        font-weight:950;
+        color:#0f172a;
+      }
+      .feature p{
+        margin:6px 0 0 0;
+        color:var(--muted);
+        font-size:0.9rem;
+        line-height:1.35;
+      }
+      .chip-row{display:flex; flex-wrap:wrap; gap:8px; margin-top:12px}
+      .chip{
+        padding:6px 10px;
+        border-radius:999px;
+        border:1px solid rgba(148,163,184,0.35);
+        background: rgba(255,255,255,0.85);
+        color:#334155;
+        font-weight:900;
+        font-size:.85rem;
+      }
+      .modal-footer{
+        padding:14px 16px;
+        border-top:1px solid var(--border);
+        display:flex;
+        justify-content:flex-end;
+        gap:10px;
+        flex-wrap:wrap;
+      }
+      .illustration{
+        border-radius:14px;
+        border:1px solid rgba(255,255,255,0.55);
+        background: radial-gradient(circle at 30% 20%, rgba(16,185,129,0.16), transparent 55%),
+                    radial-gradient(circle at 80% 70%, rgba(245,158,11,0.16), transparent 55%),
+                    radial-gradient(circle at 60% 30%, rgba(239,68,68,0.12), transparent 55%),
+                    linear-gradient(145deg, #ffffff, #f3f4f6);
+        box-shadow: var(--shadow);
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        padding:10px;
+        overflow:hidden;
+      }
+      .toast-wrap{
+        position:fixed;
+        bottom:18px;
+        right:18px;
+        display:flex;
+        flex-direction:column;
+        gap:10px;
+        z-index:2500;
+        max-width:min(420px, calc(100vw - 36px));
+      }
+      .toast{
+        border-radius:14px;
+        border:1px solid rgba(255,255,255,0.45);
+        background: rgba(255,255,255,0.92);
+        box-shadow: 0 20px 40px rgba(2,6,23,0.18);
+        padding:12px 12px;
+        display:flex;
+        gap:10px;
+        align-items:flex-start;
+        animation: toastIn 180ms ease-out;
+      }
+      .toast .dot{
+        width:10px;
+        height:10px;
+        border-radius:999px;
+        margin-top:4px;
+        flex:0 0 auto;
+      }
+      .toast .t-title{font-weight:950; color:#0f172a; margin:0}
+      .toast .t-body{color:var(--muted); font-size:.9rem; margin:4px 0 0 0; line-height:1.35}
+      @keyframes toastIn{
+        from { transform: translateY(6px); opacity: 0; }
+        to { transform: translateY(0); opacity: 1; }
+      }
+      @media (max-width: 900px){
+        .hero{grid-template-columns: 1fr;}
+        .feature-grid{grid-template-columns: 1fr;}
+      }
+
+      /* Tour overlay */
+      .tour-backdrop{
+        position:fixed;
+        inset:0;
+        background:rgba(2,6,23,0.55);
+        z-index:2600;
+      }
+      .tour-hole{
+        position:fixed;
+        border-radius:14px;
+        box-shadow: 0 0 0 9999px rgba(2,6,23,0.55);
+        outline: 2px solid rgba(255,255,255,0.85);
+        z-index:2601;
+        pointer-events:none;
+      }
+      .tour-pop{
+        position:fixed;
+        width:min(420px, calc(100vw - 36px));
+        border-radius:14px;
+        border:1px solid rgba(255,255,255,0.45);
+        background: rgba(255,255,255,0.96);
+        box-shadow: 0 24px 55px rgba(2,6,23,0.30);
+        padding:12px 12px;
+        z-index:2602;
+      }
+      .tour-kicker{
+        font-size:0.75rem;
+        color:var(--muted);
+        font-weight:950;
+        letter-spacing:1px;
+        text-transform:uppercase;
+      }
+      .tour-title{
+        margin:6px 0 0 0;
+        font-weight:950;
+        color:#0f172a;
+      }
+      .tour-body{
+        margin:6px 0 0 0;
+        color:#334155;
+        line-height:1.35;
+        font-size:0.95rem;
+      }
+      .tour-actions{
+        display:flex;
+        justify-content:space-between;
+        gap:10px;
+        margin-top:12px;
+        flex-wrap:wrap;
+      }
+      .tour-actions .left, .tour-actions .right{display:flex; gap:8px; flex-wrap:wrap;}
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+    <div id="toastRoot" class="toast-wrap" aria-live="polite"></div>
+    <script>
+      // -----------------------------
+      // Konfiguracija (primer podataka)
+      // -----------------------------
+      const DEMO = {
+        appTitle: "Prijava i upravljanje zastojima",
+        userEmail: "demo@klijent.local",
+        machines: ["1","2","3","4","5","6","7","8"],
+        managers: ["Nikola Jovanović", "Maja Petrović", "Vladimir Ilić", "Jelena Simić", "Marko Pavlović", "Ana Stojanović"],
+        shiftLabels: ["", "1. SMENA", "2. SMENA", "3. SMENA"],
+      };
+
+      function pad2(n){ return String(n).padStart(2,"0"); }
+      function fmtDate(d){
+        return `${d.getFullYear()}-${pad2(d.getMonth()+1)}-${pad2(d.getDate())}`;
+      }
+      function fmtTime(d){ return `${pad2(d.getHours())}:${pad2(d.getMinutes())}`; }
+      function minutes(ms){ return ms / 60000; }
+      function clamp(n,a,b){ return Math.max(a, Math.min(b,n)); }
+
+      function seededRandom(seed){
+        // xorshift32
+        let x = seed >>> 0;
+        return () => {
+          x ^= x << 13; x >>>= 0;
+          x ^= x >> 17; x >>>= 0;
+          x ^= x << 5;  x >>>= 0;
+          return (x >>> 0) / 4294967296;
+        };
+      }
+      function pick(rng, arr){ return arr[Math.floor(rng() * arr.length)]; }
+
+      function shiftForDate(date){
+        const h = date.getHours();
+        if (h >= 6 && h < 14) return 1;
+        if (h >= 14 && h < 22) return 2;
+        return 3;
+      }
+
+      function buildWeeklySchedule(now){
+        // Schedule map: dateStr -> {1:manager,2:manager,3:manager}
+        const base = new Date(now);
+        base.setHours(0,0,0,0);
+        // Monday of this week
+        const day = base.getDay(); // 0 Sun..6 Sat
+        const deltaToMon = (day === 0 ? -6 : 1 - day);
+        const monday = new Date(base);
+        monday.setDate(base.getDate() + deltaToMon);
+
+        const seed = Number(`${monday.getFullYear()}${pad2(monday.getMonth()+1)}${pad2(monday.getDate())}`);
+        const rng = seededRandom(seed);
+        const schedule = {};
+        for (let i=0;i<7;i++){
+          const d = new Date(monday);
+          d.setDate(monday.getDate() + i);
+          const dateStr = fmtDate(d);
+          schedule[dateStr] = {
+            1: pick(rng, DEMO.managers),
+            2: pick(rng, DEMO.managers),
+            3: pick(rng, DEMO.managers),
+          };
+        }
+        return { monday, schedule };
+      }
+
+      function buildHistoricalIncidents(now){
+        // Generate 60 days of incidents, deterministic-ish per month.
+        const start = new Date(now);
+        start.setDate(start.getDate() - 60);
+        start.setHours(0,0,0,0);
+
+        const seed = Number(`${now.getFullYear()}${pad2(now.getMonth()+1)}15`);
+        const rng = seededRandom(seed);
+
+        const incidents = [];
+        const scheduleByWeek = {};
+
+        for (let day=0; day<61; day++){
+          const date = new Date(start);
+          date.setDate(start.getDate() + day);
+
+          // Make 0-3 incidents/day
+          const count = Math.floor(rng() * 4);
+          for (let i=0;i<count;i++){
+            const machine = pick(rng, DEMO.machines);
+            const s = new Date(date);
+            s.setHours(6 + Math.floor(rng()*16), Math.floor(rng()*60), 0, 0);
+            const respMin = Math.floor(1 + rng()*18);
+            const durMin = Math.floor(respMin + 4 + rng()*70);
+            const responded = rng() > 0.06; // sometimes no response recorded
+            const ended = rng() > 0.03;     // sometimes still open in history window
+
+            const responseAt = responded ? new Date(s.getTime() + respMin*60000) : null;
+            const endAt = ended ? new Date(s.getTime() + durMin*60000) : null;
+
+            incidents.push({
+              id: machine,
+              start: s.getTime(),
+              response: responseAt ? responseAt.getTime() : null,
+              end: endAt ? endAt.getTime() : null,
+            });
+          }
+        }
+
+        // Create derived manager/shift for each incident based on weekly schedule.
+        function managerFor(ts){
+          const date = new Date(ts);
+          const dateStr = fmtDate(date);
+          const shift = shiftForDate(date);
+          // Ensure schedule exists for that week by building schedule for that day.
+          // We keep it simple: build schedule for that day/week and cache.
+          const { monday, schedule } = buildWeeklySchedule(date);
+          const weekKey = fmtDate(monday);
+          if (!scheduleByWeek[weekKey]) scheduleByWeek[weekKey] = schedule;
+          const mgr = scheduleByWeek[weekKey][dateStr]?.[shift] || "Nedodeljeno";
+          return { manager: mgr, shift };
+        }
+
+        const enriched = incidents.map(inc => {
+          const { manager, shift } = managerFor(inc.start);
+          const durationMin = inc.end ? minutes(inc.end - inc.start) : null;
+          const responseMin = inc.response ? minutes(inc.response - inc.start) : null;
+          return {
+            ...inc,
+            manager,
+            shift,
+            dateStr: fmtDate(new Date(inc.start)),
+            startTime: fmtTime(new Date(inc.start)),
+            durationMin,
+            responseMin,
+          };
+        });
+
+        enriched.sort((a,b) => b.start - a.start);
+        return enriched;
+      }
+
+      // -----------------------------
+      // App state
+      // -----------------------------
+      const state = {
+        loggedIn: false,
+        tab: "uzivo",
+        showAbout: false,
+        showTour: false,
+        tourStep: 0,
+        scenarioRunning: false,
+        scenarioTimeouts: [],
+        now: Date.now(),
+        schedule: buildWeeklySchedule(new Date()),
+        active: new Map(), // machineId -> { startTs, status: "ZASTOJ"|"ODZIV", responseTs? }
+        history: [],
+        historical: buildHistoricalIncidents(new Date()),
+        reportMonth: (() => {
+          const d = new Date();
+          return `${d.getFullYear()}-${pad2(d.getMonth()+1)}`;
+        })(),
+        selectedManager: "Svi",
+      };
+
+      function initHistoryFromHistorical(){
+        // Seed last 24h view from historical + any current active
+        const cutoff = Date.now() - 24*60*60*1000;
+        const list = state.historical
+          .filter(x => x.start >= cutoff || (x.end && x.end >= cutoff))
+          .slice(0, 60)
+          .map(x => ({
+            id: x.id,
+            start: x.start,
+            response: x.response,
+            end: x.end,
+            active: !x.end,
+          }));
+        state.history = list;
+      }
+      initHistoryFromHistorical();
+
+      // -----------------------------
+      // UI rendering
+      // -----------------------------
+      const root = document.getElementById("root");
+      const toastRoot = document.getElementById("toastRoot");
+
+      function el(tag, attrs = {}, children = []){
+        const n = document.createElement(tag);
+        for (const [k,v] of Object.entries(attrs)){
+          if (k === "class") n.className = v;
+          else if (k === "style") n.setAttribute("style", v);
+          else if (k.startsWith("on") && typeof v === "function") n.addEventListener(k.slice(2).toLowerCase(), v);
+          else if (v === false || v === null || v === undefined) {}
+          else n.setAttribute(k, String(v));
+        }
+        for (const c of (Array.isArray(children) ? children : [children])){
+          if (c === null || c === undefined) continue;
+          if (typeof c === "string") n.appendChild(document.createTextNode(c));
+          else n.appendChild(c);
+        }
+        return n;
+      }
+
+      function card(children, extraClass=""){
+        return el("div",{class:`card ${extraClass}`}, children);
+      }
+
+      function renderLogin(){
+        const email = el("input",{type:"email", placeholder:"Email", value:DEMO.userEmail});
+        const pass = el("input",{type:"password", placeholder:"Lozinka", value:""});
+        const err = el("div",{class:"muted", style:"margin-top:8px; display:none;"}, "");
+
+        const submit = el("button",{class:"btn primary", style:"width:100%; margin-top:12px;", onClick:(e)=>{
+          e.preventDefault();
+          const ok = (email.value || "").trim().length > 0;
+          if (!ok){
+            err.style.display = "block";
+            err.style.color = "var(--red1)";
+            err.textContent = "Unesite email.";
+            return;
+          }
+          state.loggedIn = true;
+          rerender();
+        }}, "Prijavi se");
+
+        return el("div",{class:"login-screen"}, [
+          card([
+            el("div",{class:"login-box"}, [
+              el("div",{style:"text-align:center; margin-bottom:14px;"}, [
+                el("h1",{}, DEMO.appTitle),
+                el("div",{class:"notice", style:"margin-top:6px;"}, "Prijavite se da biste pristupili uživo pregledu, rasporedu smena i statistici zastoja.")
+              ]),
+              el("form",{onSubmit:(e)=>e.preventDefault()}, [
+                email,
+                el("div",{style:"height:10px"}),
+                pass,
+                err,
+                submit,
+                el("div",{class:"danger-outline", style:"margin-top:12px;"}, [
+                  el("div",{style:"font-weight:900; color:#991b1b; margin-bottom:4px;"}, "Brzi tok događaja"),
+                  el("div",{class:"notice"}, "Tok zastoja: Prijava → Odziv → Kraj. Promene se odmah vide u uživo prikazu i izveštajima.")
+                ])
+              ])
+            ])
+          ])
+        ]);
+      }
+
+      function currentShiftInfo(){
+        const now = new Date(state.now);
+        const dateStr = fmtDate(now);
+        const shift = shiftForDate(now);
+        const mgr = state.schedule.schedule[dateStr]?.[shift] || "Nije uneto";
+        return { shift, manager: mgr };
+      }
+
+      function renderHeader(){
+        const logo = el("img",{
+          // logo is stored in repo root, page is under /demo/
+          src: "../Pogon_io_LOGO_vertical.png",
+          alt: "Logo",
+          class: "header-logo",
+          loading: "eager",
+          onError: (e) => { e.currentTarget.style.display = "none"; }
+        });
+
+        const left = el("div",{class:"header-left"}, [
+          logo,
+          el("div",{class:"brand"}, [
+            el("h2",{}, "Dashboard"),
+            el("div",{class:"subtitle"}, "Uživo · Raspored · Statistika")
+          ]),
+          el("div",{class:"tabs"}, [
+            tabBtn("uzivo", "Uživo"),
+            tabBtn("raspored", "Raspored smena"),
+            tabBtn("statistika", "Statistika")
+          ])
+        ]);
+
+        const right = el("div",{class:"header-right"}, [
+          el("div",{class:"pill"}, [
+            el("span",{class:"muted"}, "Korisnik:"),
+            el("strong",{}, DEMO.userEmail)
+          ]),
+          el("button",{class:"btn primary", onClick:()=>{
+            state.showAbout = true;
+            rerender();
+          }}, "Zašto ovaj sistem?"),
+          el("button",{class:"btn secondary", onClick:()=>{
+            state.showTour = true;
+            state.tourStep = 0;
+            rerender();
+          }}, "Vodič"),
+          el("button",{class:"btn secondary", onClick:()=>{
+            // reset prikaza na početno stanje
+            state.active.clear();
+            initHistoryFromHistorical();
+            state.schedule = buildWeeklySchedule(new Date());
+            state.selectedManager = "Svi";
+            state.showAbout = false;
+            state.showTour = false;
+            stopScenario();
+            rerender();
+          }}, "Reset prikaza"),
+          el("button",{class:"btn danger", onClick:()=>{
+            state.loggedIn = false;
+            state.showAbout = false;
+            state.showTour = false;
+            stopScenario();
+            rerender();
+          }}, "Odjavi se")
+        ]);
+
+        return el("header",{}, [left, right]);
+      }
+
+      function tabBtn(id, label){
+        return el("button",{
+          id: `tab-${id}`,
+          class:`tab-btn ${state.tab === id ? "active" : ""}`,
+          onClick:()=>{ state.tab = id; rerender(); }
+        }, label);
+      }
+
+      // -----------------------------
+      // Actions
+      // -----------------------------
+      function ensureActive(machineId){
+        if (!state.active.has(machineId)){
+          state.active.set(machineId, { start: state.now, status: "ZASTOJ", response: null });
+          // push into history as active
+          state.history.unshift({ id: machineId, start: state.now, response: null, end: null, active: true });
+          state.history = state.history.slice(0, 80);
+        }
+      }
+
+      function toast(kind, title, body){
+        const color = kind === "danger" ? "var(--red1)" : kind === "warn" ? "var(--amber1)" : "var(--green1)";
+        const node = el("div",{class:"toast", role:"status"}, [
+          el("div",{class:"dot", style:`background:${color}`}, ""),
+          el("div",{}, [
+            el("p",{class:"t-title"}, title),
+            el("p",{class:"t-body"}, body),
+          ])
+        ]);
+        toastRoot.appendChild(node);
+        setTimeout(()=>{ node.style.opacity = "0"; node.style.transform = "translateY(6px)"; node.style.transition="all 220ms ease"; }, 3200);
+        setTimeout(()=>{ node.remove(); }, 3550);
+      }
+
+      function actionPrijava(machineId){
+        ensureActive(machineId);
+        toast("danger", "Prijava zastoja", `Radna stanica ${machineId} je u statusu ZASTOJ. U “Uživo” delu se pojavljuje aktivna kartica i počinje tajmer.`);
+        rerender();
+      }
+
+      function actionOdziv(machineId){
+        ensureActive(machineId);
+        const a = state.active.get(machineId);
+        if (a.status !== "ODZIV"){
+          a.status = "ODZIV";
+          a.response = state.now;
+          // update history first matching active row
+          const row = state.history.find(x => x.id === machineId && x.active);
+          if (row) row.response = state.now;
+        }
+        toast("warn", "Odziv evidentiran", `Radna stanica ${machineId} je prešla u status ODZIV. Vreme odziva se prikazuje u tabelama/izveštajima.`);
+        rerender();
+      }
+
+      function actionKraj(machineId){
+        const a = state.active.get(machineId);
+        if (!a) return;
+        const end = state.now;
+        state.active.delete(machineId);
+        const row = state.history.find(x => x.id === machineId && x.active);
+        if (row){
+          row.end = end;
+          row.active = false;
+        } else {
+          state.history.unshift({ id: machineId, start: a.start, response: a.response, end, active: false });
+        }
+        toast("success", "Kraj zastoja", `Radna stanica ${machineId} je zatvorena. Trajanje i odziv ulaze u statistiku i istorijske preglede.`);
+        rerender();
+      }
+
+      function scheduleTimeout(fn, ms){
+        const id = setTimeout(fn, ms);
+        state.scenarioTimeouts.push(id);
+        return id;
+      }
+
+      function stopScenario(){
+        for (const id of state.scenarioTimeouts) clearTimeout(id);
+        state.scenarioTimeouts = [];
+        state.scenarioRunning = false;
+      }
+
+      function runScenario(){
+        if (state.scenarioRunning) return;
+        state.scenarioRunning = true;
+        state.scenarioTimeouts = [];
+
+        const picks = [];
+        const pool = [...DEMO.machines];
+        while (picks.length < 3 && pool.length){
+          const idx = Math.floor(Math.random() * pool.length);
+          picks.push(pool.splice(idx, 1)[0]);
+        }
+
+        toast("warn", "Scenario pokrenut", `Automatski tok na radnim stanicama ${picks.join(", ")} (Prijava → Odziv → Kraj).`);
+        // Ensure we're on Uživo for the best visual effect
+        state.tab = "uzivo";
+        rerender();
+
+        // Station 1
+        scheduleTimeout(()=>actionPrijava(picks[0]), 600);
+        scheduleTimeout(()=>actionOdziv(picks[0]), 2600);
+        scheduleTimeout(()=>actionKraj(picks[0]), 6200);
+
+        // Station 2 overlaps a bit
+        scheduleTimeout(()=>actionPrijava(picks[1]), 1400);
+        scheduleTimeout(()=>actionOdziv(picks[1]), 4200);
+        scheduleTimeout(()=>actionKraj(picks[1]), 9800);
+
+        // Station 3 later
+        scheduleTimeout(()=>actionPrijava(picks[2]), 2600);
+        scheduleTimeout(()=>actionOdziv(picks[2]), 7800);
+        scheduleTimeout(()=>actionKraj(picks[2]), 13800);
+
+        scheduleTimeout(()=>{
+          state.scenarioRunning = false;
+          state.scenarioTimeouts = [];
+          toast("success", "Scenario završen", "Svi događaji su zatvoreni. Pogledaj tabelu 24h i Statistiku za rezultate.");
+        }, 15000);
+      }
+
+      function renderMiniActions(){
+        const machineSel = el("select",{id:"machineSel"});
+        for (const m of DEMO.machines){
+          machineSel.appendChild(el("option",{value:m}, `Radna stanica ${m}`));
+        }
+        const info = el("div",{class:"notice"}, "Brzi unos: izaberi radnu stanicu pa klikni Prijava/Odziv/Kraj.");
+        return card([
+          el("div",{class:"panel", id:"quick-actions"}, [
+            el("h3",{}, "Brzi unos događaja"),
+            el("div",{class:"field"}, [
+              el("label",{}, "Radna stanica"),
+              machineSel,
+              el("div",{class:"mini-actions"}, [
+                el("button",{class:"btn danger", onClick:()=>actionPrijava(machineSel.value)}, "Prijava"),
+                el("button",{class:"btn warn", onClick:()=>actionOdziv(machineSel.value)}, "Odziv"),
+                el("button",{class:"btn success", onClick:()=>actionKraj(machineSel.value)}, "Kraj"),
+                !state.scenarioRunning
+                  ? el("button",{class:"btn primary", id:"run-scenario", onClick:()=>runScenario()}, "Pusti scenario")
+                  : el("button",{class:"btn secondary", id:"stop-scenario", onClick:()=>{
+                      stopScenario();
+                      toast("warn", "Scenario zaustavljen", "Automatska simulacija je prekinuta.");
+                      rerender();
+                    }}, "Zaustavi")
+              ]),
+            ]),
+            el("div",{style:"margin-top:10px"}, info)
+          ])
+        ]);
+      }
+
+      // -----------------------------
+      // Tab: Uživo
+      // -----------------------------
+      function renderUzivo(){
+        const { shift, manager } = currentShiftInfo();
+        const activeIds = [...state.active.keys()].sort((a,b)=> state.active.get(a).start - state.active.get(b).start);
+
+        const banner = el("div",{class:"shift-banner", id:"shift-banner"}, [
+          el("div",{style:"flex:1; min-width:260px"}, [
+            el("div",{class:"shift-k"}, "Trenutna smena"),
+            el("div",{class:"shift-v", id:"shiftValue"}, DEMO.shiftLabels[shift])
+          ]),
+          el("div",{style:"flex:1; min-width:260px; text-align:right"}, [
+            el("div",{class:"shift-k"}, "Šef smene"),
+            el("div",{class:"shift-v", id:"managerValue"}, manager)
+          ])
+        ]);
+
+        const activeTop = el("div",{id:"active-header", style:"display:flex; justify-content:space-between; align-items:center; gap:10px; flex-wrap:wrap; margin-top:14px"}, [
+          el("h3",{style:"margin:0; font-size:1.2rem; color:#334155"}, "Aktivni zastoji"),
+          el("div",{id:"activeCount", style:`background:${activeIds.length>0 ? "linear-gradient(135deg,var(--red1),var(--red2))" : "linear-gradient(135deg,#22c55e,#15803d)"}; color:white; padding:8px 16px; border-radius:999px; font-weight:900; box-shadow:0 4px 6px rgba(0,0,0,0.1)`}, `${activeIds.length} Aktivnih`)
+        ]);
+
+        const panel = el("div",{style:"margin-top:12px"}, []);
+        if (activeIds.length === 0){
+          panel.appendChild(card([el("div",{class:"panel"}, [
+            el("div",{class:"notice"}, "Sve radne stanice rade normalno. Nema aktivnih zastoja.")
+          ])]));
+        } else {
+          const cards = el("div",{class:"active-panel", id:"active-panel"}, activeIds.map(id=>{
+            const a = state.active.get(id);
+            const diffSec = Math.max(0, Math.floor((state.now - a.start)/1000));
+            const mm = pad2(Math.floor(diffSec/60));
+            const ss = pad2(diffSec%60);
+            const cls = a.status === "ODZIV" ? "odziv" : "zastoj";
+            return el("div",{class:`machine-card ${cls}`}, [
+              el("div",{class:"card-header"}, "RADNA STANICA"),
+              el("div",{class:"card-id"}, id),
+              el("div",{class:"card-status"}, a.status),
+              el("div",{class:"card-timer", id:`timer-${id}`}, `${mm}:${ss}`)
+            ]);
+          }));
+          panel.appendChild(cards);
+        }
+
+        const history = renderLast24hTable();
+        return el("div",{}, [
+          renderMiniActions(),
+          el("div",{style:"height:14px"}),
+          banner,
+          activeTop,
+          panel,
+          el("div",{style:"margin-top:18px"}, history)
+        ]);
+      }
+
+      function formatDuration(ms){
+        if (!ms && ms !== 0) return "-";
+        const m = Math.floor(ms/60000);
+        const s = Math.floor((ms%60000)/1000);
+        return `${m}m ${s}s`;
+      }
+
+      function renderLast24hTable(){
+        const cutoff = state.now - 24*60*60*1000;
+        const minDuration = 5*60*1000;
+        const list = state.history
+          .map(x => {
+            const dur = x.end ? (x.end - x.start) : (state.now - x.start);
+            const resp = x.response ? (x.response - x.start) : null;
+            return { ...x, dur, resp };
+          })
+          .filter(x => (x.start >= cutoff || (x.end && x.end >= cutoff)) && (x.active || x.dur >= minDuration))
+          .slice(0, 40);
+
+        const table = el("table",{}, [
+          el("thead",{}, el("tr",{}, [
+            el("th",{}, "Radna stanica (ID)"),
+            el("th",{}, "Početak"),
+            el("th",{}, "Reakcija"),
+            el("th",{}, "Trajanje"),
+            el("th",{}, "Status")
+          ])),
+          el("tbody",{}, list.map(row=>{
+            return el("tr",{}, [
+              el("td",{}, el("strong",{}, row.id)),
+              el("td",{}, new Date(row.start).toLocaleTimeString("sr-RS",{hour:"2-digit", minute:"2-digit"})),
+              el("td",{}, row.resp ? formatDuration(row.resp) : "-"),
+              el("td",{}, row.end ? el("strong",{}, formatDuration(row.dur)) : el("span",{style:"color:var(--red1); font-weight:900"}, "U toku...")),
+              el("td",{}, row.active ? el("span",{class:"badge active"}, "AKTIVAN") : el("span",{class:"badge done"}, "REŠEN"))
+            ]);
+          }))
+        ]);
+
+        return card([
+          el("div",{class:"panel"}, [
+            el("h3",{}, "Pregled zastoja (poslednja 24h — samo duži od 5 min)"),
+            el("div",{style:"overflow-x:auto; padding:0"}, table)
+          ])
+        ]);
+      }
+
+      // -----------------------------
+      // Tab: Raspored smena
+      // -----------------------------
+      function renderRaspored(){
+        const { monday, schedule } = state.schedule;
+        const days = [];
+        for (let i=0;i<7;i++){
+          const d = new Date(monday);
+          d.setDate(monday.getDate()+i);
+          days.push(d);
+        }
+
+        function weekTitle(){
+          const end = new Date(monday);
+          end.setDate(monday.getDate()+6);
+          return `${pad2(monday.getDate())}.${pad2(monday.getMonth()+1)} - ${pad2(end.getDate())}.${pad2(end.getMonth()+1)}.${end.getFullYear()}`;
+        }
+
+        const controls = card([
+          el("div",{class:"panel", id:"schedule-controls"}, [
+            el("div",{style:"display:flex; justify-content:space-between; align-items:center; gap:10px; flex-wrap:wrap"}, [
+              el("button",{class:"btn secondary", onClick:()=>{
+                const prev = new Date(monday);
+                prev.setDate(monday.getDate()-7);
+                state.schedule = buildWeeklySchedule(prev);
+                rerender();
+              }}, "← Prošla nedelja"),
+              el("div",{style:"font-weight:900; color:#334155"}, `Raspored: ${weekTitle()}`),
+              el("button",{class:"btn secondary", onClick:()=>{
+                const next = new Date(monday);
+                next.setDate(monday.getDate()+7);
+                state.schedule = buildWeeklySchedule(next);
+                rerender();
+              }}, "Sledeća nedelja →"),
+            ]),
+            el("div",{class:"notice", style:"margin-top:8px"}, "Unesite šefove smena po danu i smeni. (Promene se čuvaju lokalno u ovom prikazu.)")
+          ])
+        ]);
+
+        const grid = el("div",{class:"two-col"}, days.map(d=>{
+          const dateStr = fmtDate(d);
+          const dayData = schedule[dateStr] || {1:"",2:"",3:""};
+
+          const wrapper = el("div",{class:"card"}, [
+            el("div",{class:"panel"}, [
+              el("div",{style:"font-weight:900; margin-bottom:10px; color:#334155"}, d.toLocaleDateString("sr-RS",{weekday:"long", day:"2-digit", month:"2-digit"})),
+              ...[1,2,3].map(shift=>{
+                const inp = el("input",{type:"text", value: dayData[shift], placeholder:"Ime šefa smene"});
+                inp.addEventListener("input", ()=>{
+                  schedule[dateStr] = schedule[dateStr] || {1:"",2:"",3:""};
+                  schedule[dateStr][shift] = inp.value;
+                });
+                return el("div",{style:"display:flex; align-items:center; gap:10px; margin:8px 0"}, [
+                  el("div",{style:"width:90px; color:var(--muted); font-weight:900"}, `Smena ${shift}`),
+                  inp
+                ]);
+              })
+            ])
+          ]);
+          return wrapper;
+        }));
+
+        const save = card([
+          el("div",{class:"panel"}, [
+            el("div",{style:"display:flex; justify-content:flex-end; gap:10px; flex-wrap:wrap"}, [
+              el("button",{class:"btn success", onClick:()=>{
+                // No backend; just a toast-like alert.
+                alert("Raspored je sačuvan lokalno (u memoriji).");
+              }}, "SAČUVAJ RASPORED")
+            ])
+          ])
+        ]);
+
+        return el("div",{}, [
+          controls,
+          el("div",{style:"height:14px"}),
+          grid,
+          el("div",{style:"height:14px"}),
+          save
+        ]);
+      }
+
+      // -----------------------------
+      // Tab: Statistika
+      // -----------------------------
+      function renderStatistika(){
+        const month = state.reportMonth;
+        const startDate = `${month}-01`;
+        const endDate = `${month}-31`;
+        const list = state.historical
+          .filter(x => x.dateStr >= startDate && x.dateStr <= endDate)
+          .filter(x => state.selectedManager === "Svi" ? true : x.manager === state.selectedManager)
+          .filter(x => x.end) // only closed incidents for stats
+          .map(x => ({
+            ...x,
+            durationMin: x.durationMin ?? 0,
+            responseMin: x.responseMin,
+          }));
+
+        const totalMinutes = list.reduce((s,x)=> s + (x.durationMin||0), 0);
+        const totalIncidents = list.length;
+        const avg = totalIncidents ? (totalMinutes/totalIncidents) : 0;
+
+        const byMachine = new Map();
+        const byManager = new Map();
+        const respByManager = new Map(); // mgr -> {total,count}
+        for (const x of list){
+          byMachine.set(x.id, (byMachine.get(x.id)||0) + (x.durationMin||0));
+          byManager.set(x.manager, (byManager.get(x.manager)||0) + (x.durationMin||0));
+          if (x.responseMin !== null && x.responseMin !== undefined){
+            const v = respByManager.get(x.manager) || {total:0,count:0};
+            v.total += x.responseMin;
+            v.count += 1;
+            respByManager.set(x.manager, v);
+          }
+        }
+
+        const topMachine = [...byMachine.entries()].sort((a,b)=>b[1]-a[1])[0];
+        const topMachineName = topMachine ? `Radna stanica ${topMachine[0]}` : "-";
+        const topMachineMin = topMachine ? Math.round(topMachine[1]) : 0;
+
+        const managerBars = [...byManager.entries()]
+          .map(([name, mins]) => ({ name, mins: Math.round(mins) }))
+          .sort((a,b)=> b.mins - a.mins)
+          .slice(0, 6);
+
+        const machineBars = [...byMachine.entries()]
+          .map(([id, mins]) => ({ name: `Radna stanica ${id}`, mins: Math.round(mins) }))
+          .sort((a,b)=> b.mins - a.mins)
+          .slice(0, 6);
+
+        const responseBars = [...respByManager.entries()]
+          .map(([name, v]) => ({ name, avg: v.count ? Number((v.total / v.count).toFixed(1)) : null }))
+          .filter(x => x.avg !== null)
+          .sort((a,b)=> a.avg - b.avg)
+          .slice(0, 6);
+
+        const managersAll = ["Svi", ...new Set(state.historical.map(x => x.manager))];
+
+        const controls = card([
+          el("div",{class:"panel", id:"stats-controls"}, [
+            el("h3",{}, "Kontrole"),
+            el("div",{class:"row"}, [
+              el("div",{class:"field"}, [
+                el("label",{}, "Mesec"),
+                el("input",{type:"month", value: state.reportMonth, onInput:(e)=>{
+                  state.reportMonth = e.target.value;
+                  rerender();
+                }})
+              ]),
+              el("div",{class:"field"}, [
+                el("label",{}, "Šef"),
+                (() => {
+                  const sel = el("select",{value: state.selectedManager});
+                  for (const m of managersAll){
+                    sel.appendChild(el("option",{value:m}, m === "Svi" ? "Svi šefovi" : m));
+                  }
+                  sel.addEventListener("change", ()=>{
+                    state.selectedManager = sel.value;
+                    rerender();
+                  });
+                  return sel;
+                })()
+              ]),
+              el("div",{class:"field"}, [
+                el("button",{class:"btn primary", onClick:()=>{
+                  rerender();
+                }}, "Učitaj podatke")
+              ])
+            ]),
+            el("div",{class:"notice", style:"margin-top:10px"}, "KPI i izveštaji za odabrani period, sa filtriranjem po šefu smene.")
+          ])
+        ]);
+
+        const kpis = el("div",{class:"kpi-cards"}, [
+          card([el("div",{class:"kpi-card"}, [
+            el("div",{class:"kpi-label"}, "Ukupno vreme zastoja"),
+            el("div",{class:"kpi-value", style:"color:var(--red1)"}, `${(totalMinutes/60).toFixed(1)} `),
+            el("div",{class:"kpi-sub"}, `${totalIncidents} zastoja (u mesecu)`)
+          ])]),
+          card([el("div",{class:"kpi-card"}, [
+            el("div",{class:"kpi-label"}, "Najkritičnija presa"),
+            el("div",{class:"kpi-value", style:"color:var(--blue1); font-size:1.6rem"}, topMachineName),
+            el("div",{class:"kpi-sub"}, topMachine ? `${topMachineMin} min` : "")
+          ])]),
+          card([el("div",{class:"kpi-card"}, [
+            el("div",{class:"kpi-label"}, "Prosečan zastoj"),
+            el("div",{class:"kpi-value", style:"color:var(--green1)"}, `${avg.toFixed(1)} `),
+            el("div",{class:"kpi-sub"}, "min po zastoju")
+          ])]),
+        ]);
+
+        const charts = el("div",{class:"two-col"}, [
+          card([el("div",{class:"panel"}, [
+            el("h3",{}, "Udeo vremena zastoja (šefovi)"),
+            renderBarList(managerBars, (x)=>x.mins, (x)=>`${x.mins} min`, "mins")
+          ])]),
+          card([el("div",{class:"panel"}, [
+            el("h3",{}, "Vreme zastoja po presama (min)"),
+            renderBarList(machineBars, (x)=>x.mins, (x)=>`${x.mins} min`, "mins")
+          ])]),
+        ]);
+
+        const response = card([el("div",{class:"panel"}, [
+          el("h3",{style:"color:var(--amber2)"}, "Prosečno vreme odziva po šefovima (min)"),
+          responseBars.length ? renderBarList(responseBars, (x)=>x.avg, (x)=>`${x.avg} min`, "avg", true) : el("div",{class:"notice"}, "Nema dovoljno podataka za vreme odziva u ovom filteru.")
+        ])]);
+
+        const detail = card([el("div",{class:"panel"}, [
+          el("h3",{}, "Detaljan izveštaj"),
+          el("div",{style:"overflow-x:auto; padding:0"}, renderDetailTable(list))
+        ])]);
+
+        return el("div",{}, [controls, kpis, charts, el("div",{style:"height:14px"}), response, el("div",{style:"height:14px"}), detail]);
+      }
+
+      function renderBarList(items, getValue, formatValue, key, invertColors=false){
+        const max = Math.max(1, ...items.map(getValue));
+        const list = el("div",{class:"bar-list"}, items.map((x, idx)=>{
+          const w = clamp((getValue(x)/max)*100, 5, 100);
+          const fillStyle = invertColors
+            ? `background: linear-gradient(90deg, var(--amber1), var(--amber2));`
+            : `background: linear-gradient(90deg, var(--blue1), var(--blue2));`;
+          return el("div",{class:"bar-item"}, [
+            el("div",{class:"bar-name", title:x.name}, x.name),
+            el("div",{class:"bar-wrap"}, el("div",{class:"bar-fill", style:`width:${w}%; ${fillStyle}`}, "")),
+            el("div",{class:"bar-val"}, formatValue(x))
+          ]);
+        }));
+        return list;
+      }
+
+      function renderDetailTable(list){
+        const rows = list.slice().sort((a,b)=> b.start - a.start).slice(0, 80);
+        return el("table",{}, [
+          el("thead",{}, el("tr",{}, [
+            el("th",{}, "Datum"),
+            el("th",{}, "Vreme početka"),
+            el("th",{}, "Radna stanica"),
+            el("th",{}, "Vreme odziva"),
+            el("th",{}, "Trajanje (min)"),
+            el("th",{}, "Šef smene"),
+          ])),
+          el("tbody",{}, rows.map(x=>{
+            return el("tr",{}, [
+              el("td",{}, x.dateStr),
+              el("td",{}, x.startTime),
+              el("td",{}, x.id),
+              el("td",{}, x.responseMin ? `${x.responseMin.toFixed(1)} min` : "-"),
+              el("td",{}, el("strong",{}, (x.durationMin||0).toFixed(1))),
+              el("td",{}, x.manager),
+            ]);
+          }))
+        ]);
+      }
+
+      // -----------------------------
+      // Root render + clock tick
+      // -----------------------------
+      function renderApp(){
+        const container = el("div",{class:"app-container"}, [
+          renderHeader(),
+          el("main",{}, [
+            state.tab === "uzivo" ? renderUzivo()
+              : state.tab === "raspored" ? renderRaspored()
+              : renderStatistika()
+          ]),
+          state.showAbout ? renderAboutModal() : null
+          ,state.showTour ? renderTourOverlay() : null
+        ]);
+        return container;
+      }
+
+      function tourSteps(){
+        return [
+          {
+            sel: "#quick-actions",
+            kicker: "Korak 1/6",
+            title: "Brzi unos događaja",
+            body: "Ovo je najbrži način da se prijavi zastoj, evidentira odziv i zatvori događaj. Sve promene se odmah vide u uživo prikazu i tabelama."
+          },
+          {
+            sel: "#shift-banner",
+            kicker: "Korak 2/6",
+            title: "Smena i šef smene",
+            body: "Sistem uvek prikazuje trenutnu smenu i odgovornu osobu, kako bi reakcija bila jasna i merljiva."
+          },
+          {
+            sel: "#active-header",
+            kicker: "Korak 3/6",
+            title: "Aktivni zastoji",
+            body: "Ovde se vidi koliko je aktivnih zastoja, a ispod kartice po radnoj stanici sa statusom i tajmerom."
+          },
+          {
+            sel: "#active-panel",
+            kicker: "Korak 4/6",
+            title: "Status po radnoj stanici",
+            body: "Svaka radna stanica ima status (ZASTOJ/ODZIV) i vreme trajanja. Ovo je operativni prikaz za brzo odlučivanje."
+          },
+          {
+            sel: "#tab-statistika",
+            kicker: "Korak 5/6",
+            title: "Izveštaji i KPI",
+            body: "U statistici dobijaš KPI, rang‑liste i detaljan izveštaj, sa filtriranjem po periodu i šefu smene."
+          },
+          {
+            sel: "#tab-raspored",
+            kicker: "Korak 6/6",
+            title: "Raspored smena",
+            body: "Raspored povezuje događaje sa smenom i šefom smene, što omogućava odgovornost i poboljšanje procesa."
+          }
+        ];
+      }
+
+      function renderTourOverlay(){
+        const steps = tourSteps();
+        const step = steps[clamp(state.tourStep, 0, steps.length - 1)];
+
+        const close = () => { state.showTour = false; rerender(); };
+        const next = () => {
+          if (state.tourStep >= steps.length - 1) return close();
+          state.tourStep += 1;
+          rerender();
+        };
+        const prev = () => {
+          state.tourStep = Math.max(0, state.tourStep - 1);
+          rerender();
+        };
+
+        // Use a lightweight overlay. Positioning is adjusted after render.
+        const hole = el("div",{class:"tour-hole", id:"tourHole"}, "");
+        const pop = el("div",{class:"tour-pop", id:"tourPop"}, [
+          el("div",{class:"tour-kicker"}, step.kicker),
+          el("div",{class:"tour-title"}, step.title),
+          el("div",{class:"tour-body"}, step.body),
+          el("div",{class:"tour-actions"}, [
+            el("div",{class:"left"}, [
+              el("button",{class:"btn secondary", onClick:close}, "Zatvori"),
+            ]),
+            el("div",{class:"right"}, [
+              el("button",{class:"btn secondary", onClick:prev, disabled: state.tourStep === 0}, "Nazad"),
+              el("button",{class:"btn primary", onClick:()=>{
+                // Special-case tab steps: take the user to that tab, then advance.
+                if (step.sel === "#tab-statistika") state.tab = "statistika";
+                if (step.sel === "#tab-raspored") state.tab = "raspored";
+                rerender();
+                scheduleTimeout(()=>next(), 50);
+              }}, state.tourStep === steps.length - 1 ? "Gotovo" : "Sledeće")
+            ])
+          ])
+        ]);
+
+        // After overlay is mounted, compute target rect
+        scheduleTimeout(()=>{
+          const target = document.querySelector(step.sel);
+          const holeEl = document.getElementById("tourHole");
+          const popEl = document.getElementById("tourPop");
+          if (!target || !holeEl || !popEl) return;
+
+          try { target.scrollIntoView({ block: "center", inline: "nearest", behavior: "smooth" }); } catch(e) {}
+
+          const r = target.getBoundingClientRect();
+          const pad = 10;
+          holeEl.style.left = `${Math.max(8, r.left - pad)}px`;
+          holeEl.style.top = `${Math.max(8, r.top - pad)}px`;
+          holeEl.style.width = `${Math.min(window.innerWidth - 16, r.width + pad*2)}px`;
+          holeEl.style.height = `${Math.min(window.innerHeight - 16, r.height + pad*2)}px`;
+
+          // Place pop near the hole
+          const popW = popEl.getBoundingClientRect().width;
+          const popH = popEl.getBoundingClientRect().height;
+          const preferBelow = (r.bottom + pad + popH) < window.innerHeight;
+          const top = preferBelow ? (r.bottom + 12) : Math.max(8, r.top - popH - 12);
+          const left = clamp(r.left, 8, window.innerWidth - popW - 8);
+          popEl.style.left = `${left}px`;
+          popEl.style.top = `${top}px`;
+        }, 0);
+
+        return el("div",{class:"tour-backdrop", onClick:(e)=>{ if (e.target.classList.contains("tour-backdrop")) close(); }}, [
+          hole,
+          pop
+        ]);
+      }
+
+      function renderAboutModal(){
+        const close = () => { state.showAbout = false; rerender(); };
+
+        const svg = `
+          <svg viewBox="0 0 560 380" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Ilustracija sistema">
+            <defs>
+              <linearGradient id="g1" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0" stop-color="#3b82f6" stop-opacity="0.95"/>
+                <stop offset="1" stop-color="#8b5cf6" stop-opacity="0.95"/>
+              </linearGradient>
+              <linearGradient id="g2" x1="0" y1="1" x2="1" y2="0">
+                <stop offset="0" stop-color="#10b981" stop-opacity="0.95"/>
+                <stop offset="1" stop-color="#059669" stop-opacity="0.95"/>
+              </linearGradient>
+              <linearGradient id="g3" x1="0" y1="0" x2="1" y2="0">
+                <stop offset="0" stop-color="#f59e0b" stop-opacity="0.95"/>
+                <stop offset="1" stop-color="#d97706" stop-opacity="0.95"/>
+              </linearGradient>
+              <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+                <feDropShadow dx="0" dy="10" stdDeviation="10" flood-color="#0f172a" flood-opacity="0.18"/>
+              </filter>
+            </defs>
+            <rect x="24" y="24" rx="22" ry="22" width="512" height="332" fill="#ffffff" stroke="#e2e8f0" filter="url(#shadow)"/>
+            <rect x="54" y="62" rx="12" ry="12" width="220" height="120" fill="url(#g1)"/>
+            <rect x="286" y="62" rx="12" ry="12" width="220" height="120" fill="url(#g3)"/>
+            <rect x="54" y="196" rx="12" ry="12" width="452" height="130" fill="#f1f5f9" stroke="#e2e8f0"/>
+            <circle cx="88" cy="96" r="10" fill="#ffffff" opacity="0.95"/>
+            <circle cx="88" cy="232" r="10" fill="#ef4444" opacity="0.95"/>
+            <circle cx="88" cy="262" r="10" fill="#f59e0b" opacity="0.95"/>
+            <circle cx="88" cy="292" r="10" fill="#10b981" opacity="0.95"/>
+            <text x="110" y="102" fill="#ffffff" font-size="18" font-weight="800">Prijava</text>
+            <text x="342" y="102" fill="#ffffff" font-size="18" font-weight="800">Odziv</text>
+            <text x="110" y="238" fill="#334155" font-size="16" font-weight="800">Zastoj detektovan</text>
+            <text x="110" y="268" fill="#334155" font-size="16" font-weight="800">Odziv šefa smene</text>
+            <text x="110" y="298" fill="#334155" font-size="16" font-weight="800">Kraj i analiza</text>
+            <rect x="64" y="80" rx="10" ry="10" width="140" height="14" fill="#ffffff" opacity="0.28"/>
+            <rect x="296" y="80" rx="10" ry="10" width="140" height="14" fill="#ffffff" opacity="0.28"/>
+            <rect x="296" y="104" rx="10" ry="10" width="188" height="14" fill="#ffffff" opacity="0.28"/>
+            <rect x="64" y="222" rx="10" ry="10" width="340" height="14" fill="#cbd5e1"/>
+            <rect x="64" y="252" rx="10" ry="10" width="290" height="14" fill="#cbd5e1"/>
+            <rect x="64" y="282" rx="10" ry="10" width="260" height="14" fill="#cbd5e1"/>
+            <rect x="64" y="312" rx="10" ry="10" width="220" height="14" fill="#cbd5e1"/>
+            <rect x="54" y="62" rx="12" ry="12" width="220" height="120" fill="none" stroke="rgba(255,255,255,0.35)"/>
+            <rect x="286" y="62" rx="12" ry="12" width="220" height="120" fill="none" stroke="rgba(255,255,255,0.35)"/>
+            <rect x="54" y="62" rx="12" ry="12" width="90" height="22" fill="rgba(255,255,255,0.25)"/>
+            <rect x="286" y="62" rx="12" ry="12" width="90" height="22" fill="rgba(255,255,255,0.25)"/>
+            <text x="66" y="79" fill="#ffffff" font-size="11" font-weight="900" opacity="0.9">UŽIVO</text>
+            <text x="298" y="79" fill="#ffffff" font-size="11" font-weight="900" opacity="0.9">STATISTIKA</text>
+            <path d="M 210 122 C 248 122 248 122 286 122" stroke="#10b981" stroke-width="6" stroke-linecap="round"/>
+            <circle cx="286" cy="122" r="8" fill="url(#g2)"/>
+          </svg>
+        `;
+
+        const hero = el("div",{class:"hero"}, [
+          el("div",{class:"hero-card"}, [
+            el("div",{style:"display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap"}, [
+              el("div",{}, [
+                el("h3",{style:"margin:0; font-size:1.05rem; font-weight:950; color:#0f172a; text-transform:none; letter-spacing:0"}, "Brza reakcija. Merljivi rezultati. Manje zastoja."),
+                el("div",{class:"modal-subtitle"}, "Sistem pokriva kompletan tok: prijava zastoja → odziv šefa smene → kraj i analiza, uz KPI i izveštaje.")
+              ]),
+              el("div",{class:"chip-row"}, [
+                el("span",{class:"chip"}, "Uživo monitoring"),
+                el("span",{class:"chip"}, "Smena/šef"),
+                el("span",{class:"chip"}, "KPI i izveštaji"),
+                el("span",{class:"chip"}, "Vreme odziva")
+              ])
+            ]),
+            el("ul",{class:"hero-bullets"}, [
+              el("li",{}, "Jednostavan unos događaja (tasteri) i jasan status po radnoj stanici."),
+              el("li",{}, "Automatsko merenje vremena odziva i trajanja zastoja."),
+              el("li",{}, "Istorija + statistika po šefovima i radnim stanicama za optimizaciju procesa.")
+            ])
+          ]),
+          el("div",{class:"illustration"}, [
+            (()=>{ const w = document.createElement("div"); w.innerHTML = svg; return w.firstElementChild; })()
+          ])
+        ]);
+
+        const features = el("div",{class:"feature-grid"}, [
+          feature("Uživo panel", "Odmah vidi koje radne stanice stoje, koliko dugo i da li je odziv evidentiran."),
+          feature("Raspored smena", "Poveži događaje sa odgovornim šefom smene automatski (smena 1/2/3)."),
+          feature("Statistika i KPI", "Top uzroci i ‘kritične’ radne stanice — fokus na najveći uticaj."),
+          feature("Vreme odziva", "Meri se odziv i prikazuje po šefovima, kroz mesečne izveštaje."),
+          feature("Pregled 24h", "Operativni pregled poslednja 24h (filtrirano na značajne zastoje)."),
+          feature("Jednostavna integracija", "Prikaz i logika su spremni za povezivanje sa realnim izvorom podataka (npr. PLC/SCADA/ERP) i pravima pristupa.")
+        ]);
+
+        return el("div",{class:"modal-backdrop", onClick:(e)=>{ if (e.target.classList.contains("modal-backdrop")) close(); }}, [
+          el("div",{class:"modal", role:"dialog", "aria-modal":"true"}, [
+            el("div",{class:"modal-header"}, [
+              el("div",{}, [
+                el("h3",{class:"modal-title"}, "Šta klijent dobija ovim sistemom"),
+                el("div",{class:"modal-subtitle"}, "Kratak pregled funkcionalnosti i prednosti sistema za prijavu i upravljanje zastojima.")
+              ]),
+              el("button",{class:"btn secondary", onClick:close}, "Zatvori")
+            ]),
+            el("div",{class:"modal-body"}, [
+              hero,
+              features
+            ]),
+            el("div",{class:"modal-footer"}, [
+              el("button",{class:"btn primary", onClick:()=>{
+                state.tab = "uzivo";
+                close();
+              }}, "Otvori Uživo"),
+              el("button",{class:"btn secondary", onClick:()=>{
+                state.tab = "statistika";
+                close();
+              }}, "Otvori Statistiku")
+            ])
+          ])
+        ]);
+      }
+
+      function feature(title, body){
+        return el("div",{class:"feature"}, [
+          el("h4",{}, title),
+          el("p",{}, body)
+        ]);
+      }
+
+      function rerender(){
+        root.innerHTML = "";
+        root.appendChild(state.loggedIn ? renderApp() : renderLogin());
+      }
+
+      function updateUzivoTick(){
+        if (!state.loggedIn) return;
+        if (state.tab !== "uzivo") return;
+
+        // Update shift + manager labels (cheap, no re-render)
+        const { shift, manager } = currentShiftInfo();
+        const shiftEl = document.getElementById("shiftValue");
+        const managerEl = document.getElementById("managerValue");
+        if (shiftEl) shiftEl.textContent = DEMO.shiftLabels[shift];
+        if (managerEl) managerEl.textContent = manager;
+
+        // Update active count pill styling/text
+        const activeCountEl = document.getElementById("activeCount");
+        if (activeCountEl){
+          const n = state.active.size;
+          activeCountEl.textContent = `${n} Aktivnih`;
+          activeCountEl.style.background = n > 0
+            ? "linear-gradient(135deg,var(--red1),var(--red2))"
+            : "linear-gradient(135deg,#22c55e,#15803d)";
+        }
+
+        // Update timers for active cards
+        for (const [id, a] of state.active.entries()){
+          const t = document.getElementById(`timer-${id}`);
+          if (!t) continue;
+          const diffSec = Math.max(0, Math.floor((state.now - a.start)/1000));
+          const mm = pad2(Math.floor(diffSec/60));
+          const ss = pad2(diffSec%60);
+          t.textContent = `${mm}:${ss}`;
+        }
+      }
+
+      // tick (bez full re-render da dropdown ne "puca")
+      setInterval(()=>{
+        state.now = Date.now();
+        updateUzivoTick();
+      }, 1000);
+
+      rerender();
+    </script>
+  </body>
+</html>
