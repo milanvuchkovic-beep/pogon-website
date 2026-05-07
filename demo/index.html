@@ -412,7 +412,7 @@
         transition: opacity 150ms ease;
         pointer-events:none;
       }
-      .hm-cell:hover .hm-bar{opacity:1}
+      .hm-cell:hover .hm-bar{opacity:0.22}
 
       @media (max-width: 900px){
         .donut-wrap{grid-template-columns: 1fr; }
@@ -1559,7 +1559,7 @@
           const t = clamp(v / max, 0, 1);
           // nicer non-linear curve
           const k = Math.pow(t, 0.65);
-          const alpha = 0.10 + k * 0.55;
+          const alpha = 0.06 + k * 0.60;
           return alpha;
         };
 
@@ -1587,8 +1587,8 @@
                 const v = Math.round(grid[di][sh]);
                 const a = intensity(v);
                 const bg = `linear-gradient(135deg, rgba(59,130,246,${a}), rgba(139,92,246,${a*0.9}))`;
-                return el("div",{class:"hm-cell", title:`${dn} · Smena ${sh}: ${v} min`}, [
-                  el("div",{class:"hm-bar", style:`background:${bg}`}, ""),
+                return el("div",{class:"hm-cell", style:`background:${bg};`, title:`${dn} · Smena ${sh}: ${v} min`}, [
+                  el("div",{class:"hm-bar"}, ""),
                   el("div",{}, [
                     el("div",{class:"hm-val"}, `S${sh}`),
                     el("div",{class:"hm-min"}, `${v} min`)
@@ -1939,3 +1939,4 @@
     </script>
   </body>
 </html>
+
