@@ -162,6 +162,28 @@
         padding:10px 12px;
         font-weight:800;
       }
+      .icon-btn{
+        width:44px;
+        height:40px;
+        border-radius:12px;
+        border:1px solid var(--border);
+        background:white;
+        color:#334155;
+        display:inline-flex;
+        align-items:center;
+        justify-content:center;
+        font-weight:950;
+        cursor:pointer;
+        box-shadow: 0 10px 15px -3px rgba(2,6,23,0.08);
+        user-select:none;
+      }
+      .icon-btn:hover{background:#f1f5f9}
+      .icon-btn:active{transform: translateY(1px)}
+      .icon-btn[aria-pressed="true"]{
+        background: linear-gradient(90deg, var(--blue1) 0%, var(--blue2) 100%);
+        border-color: transparent;
+        color: white;
+      }
       .btn.primary{background: linear-gradient(90deg, var(--blue1) 0%, var(--blue2) 100%); color:white}
       .btn.success{background: linear-gradient(90deg, var(--green1) 0%, var(--green2) 100%); color:white}
       .btn.warn{background: linear-gradient(90deg, var(--amber1) 0%, var(--amber2) 100%); color:white}
@@ -976,6 +998,27 @@
         ]);
 
         const right = el("div",{class:"header-right"}, [
+          el("button",{
+            class:"icon-btn",
+            id:"fullscreenBtn",
+            title:"Full screen",
+            "aria-label":"Full screen",
+            "aria-pressed": document.fullscreenElement ? "true" : "false",
+            onClick: async ()=>{
+              try{
+                if (!document.fullscreenElement) {
+                  await document.documentElement.requestFullscreen();
+                } else {
+                  await document.exitFullscreen();
+                }
+                // update button state without full rerender
+                const b = document.getElementById("fullscreenBtn");
+                if (b) b.setAttribute("aria-pressed", document.fullscreenElement ? "true" : "false");
+              } catch(e){
+                toast("warn", "Full screen nije dostupan", "Browser je blokirao full screen ili nije podržan u ovom okruženju.");
+              }
+            }
+          }, "⛶"),
           el("div",{class:"pill"}, [
             el("span",{class:"muted"}, "Korisnik:"),
             el("strong",{}, DEMO.userEmail)
@@ -1148,31 +1191,32 @@
           picks.push(pool.splice(idx, 1)[0]);
         }
 
-        toast("warn", "Scenario pokrenut", `Automatski tok na radnim stanicama ${picks.join(", ")} (Prijava → Odziv → Kraj).`);
+        toast("warn", "Scenario pokrenut", `Automatski tok na radnim stanicama ${picks.join(", ")} (Prijava → Odziv → Kraj). Tempo je usporen radi jasnog prikaza.`);
         // Ensure we're on Uživo for the best visual effect
         state.tab = "uzivo";
         rerender();
 
+        // Usporeni scenario (bolje za prezentaciju)
         // Station 1
-        scheduleTimeout(()=>actionPrijava(picks[0]), 600);
-        scheduleTimeout(()=>actionOdziv(picks[0]), 2600);
-        scheduleTimeout(()=>actionKraj(picks[0]), 6200);
+        scheduleTimeout(()=>actionPrijava(picks[0]), 900);
+        scheduleTimeout(()=>actionOdziv(picks[0]), 6500);
+        scheduleTimeout(()=>actionKraj(picks[0]), 15000);
 
-        // Station 2 overlaps a bit
-        scheduleTimeout(()=>actionPrijava(picks[1]), 1400);
-        scheduleTimeout(()=>actionOdziv(picks[1]), 4200);
-        scheduleTimeout(()=>actionKraj(picks[1]), 9800);
+        // Station 2 (sa razmakom)
+        scheduleTimeout(()=>actionPrijava(picks[1]), 5200);
+        scheduleTimeout(()=>actionOdziv(picks[1]), 12500);
+        scheduleTimeout(()=>actionKraj(picks[1]), 22500);
 
-        // Station 3 later
-        scheduleTimeout(()=>actionPrijava(picks[2]), 2600);
-        scheduleTimeout(()=>actionOdziv(picks[2]), 7800);
-        scheduleTimeout(()=>actionKraj(picks[2]), 13800);
+        // Station 3 (poslednja, najduža)
+        scheduleTimeout(()=>actionPrijava(picks[2]), 10800);
+        scheduleTimeout(()=>actionOdziv(picks[2]), 21000);
+        scheduleTimeout(()=>actionKraj(picks[2]), 33000);
 
         scheduleTimeout(()=>{
           state.scenarioRunning = false;
           state.scenarioTimeouts = [];
           toast("success", "Scenario završen", "Svi događaji su zatvoreni. Pogledaj tabelu 24h i Statistiku za rezultate.");
-        }, 15000);
+        }, 35000);
       }
 
       function renderMiniActions(){
@@ -2026,4 +2070,5 @@
     </script>
   </body>
 </html>
+
 
