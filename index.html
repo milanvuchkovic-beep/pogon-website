@@ -5,6 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pogon.io | Digital Industrial Solutions</title>
     <meta name="description" content="Razvoj naprednih MES sistema i softverskih rešenja za industriju 4.0. Povećajte produktivnost kroz digitalnu transformaciju.">
+
+    <!-- Google Analytics 4 (GA4) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-HL315S3MY8"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-HL315S3MY8');
+    </script>
     
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -254,6 +263,33 @@
         .service-card h3 { font-size: 1.2rem; margin-bottom: 15px; }
         .service-card p { color: var(--text-gray); font-size: 0.9rem; }
 
+        /* --- CONTACT FORM (Formspree) --- */
+        .contact-grid{display:flex; justify-content:space-between; gap:40px; flex-wrap:wrap;}
+        .contact-form{
+            width: min(520px, 100%);
+            margin-top: 10px;
+            display: grid;
+            gap: 12px;
+            text-align: left;
+        }
+        .contact-form .field-row{display:grid; grid-template-columns: 1fr 1fr; gap:12px;}
+        .contact-input, .contact-textarea{
+            width: 100%;
+            padding: 12px 14px;
+            border-radius: 10px;
+            border: 1px solid rgba(255,255,255,0.14);
+            background: rgba(255,255,255,0.04);
+            color: white;
+            outline: none;
+        }
+        .contact-input::placeholder, .contact-textarea::placeholder{color: rgba(148,163,184,0.85);}
+        .contact-input:focus, .contact-textarea:focus{
+            border-color: rgba(59,130,246,0.8);
+            box-shadow: 0 0 0 4px rgba(59,130,246,0.15);
+        }
+        .contact-textarea{resize: vertical; min-height: 120px;}
+        .contact-note{color: var(--text-gray); font-size:0.85rem;}
+
         /* --- FOOTER --- */
         footer {
             padding: 60px 10% 20px;
@@ -261,7 +297,7 @@
             border-top: 1px solid rgba(255,255,255,0.05);
             color: var(--text-gray);
         }
-        .footer-content { display: flex; justify-content: space-between; margin-bottom: 40px; }
+        .footer-content { display: flex; justify-content: space-between; margin-bottom: 40px; gap: 40px; flex-wrap: wrap; }
         .footer-info h4 { color: white; margin-bottom: 15px; font-size: 1.2rem; }
         .footer-bottom { text-align: center; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.05); font-size: 0.8rem; }
 
@@ -294,6 +330,8 @@
             
             .stats-bar { gap: 30px; }
             .footer-content { flex-direction: column; gap: 30px; text-align: center; }
+            .contact-form{margin: 0 auto; text-align:left;}
+            .contact-form .field-row{grid-template-columns: 1fr;}
             
             .showcase-img { order: -1; margin-bottom: 30px; }
         }
@@ -410,18 +448,35 @@
 
     <footer id="contact">
         <div class="footer-content">
-            <div class="footer-info">
+            <div class="footer-info" style="min-width: 260px;">
                 <h4>Pogon.io</h4>
                 <p>Vaš partner za digitalnu transformaciju.</p>
                 <p>Kragujevac, Srbija</p>
                 <br>
                 <a href="mailto:info@pogon.io" style="color: var(--primary); text-decoration: none;">contact@pogon.io</a>
             </div>
-            <div class="footer-info">
+
+            <div class="footer-info" style="min-width: 240px;">
                 <h4>Linkovi</h4>
                 <a href="#" style="color: #94a3b8; text-decoration: none; display: block;">Početna</a>
                 <a href="#about" style="color: #94a3b8; text-decoration: none; display: block;">O nama</a>
                 <a href="portal.html" style="color: #94a3b8; text-decoration: none; display: block;">Klijent Login</a>
+            </div>
+
+            <div class="footer-info" style="flex: 1; min-width: 320px;">
+                <h4>Zakažite konsultacije</h4>
+                <p class="contact-note">Pošaljite kratak opis potrebe i javićemo se u najkraćem roku.</p>
+
+                <form class="contact-form" action="https://formspree.io/f/mbdwangj" method="POST">
+                    <div class="field-row">
+                        <input class="contact-input" name="name" placeholder="Ime i prezime" required>
+                        <input class="contact-input" name="company" placeholder="Firma">
+                    </div>
+                    <input class="contact-input" type="email" name="email" placeholder="Email" required>
+                    <textarea class="contact-textarea" name="message" placeholder="Poruka" required></textarea>
+                    <input type="hidden" name="_subject" value="Pogon.io — Upit sa sajta">
+                    <button type="submit" class="btn btn-primary" style="width: fit-content;">Pošalji</button>
+                </form>
             </div>
         </div>
         <div class="footer-bottom">
@@ -431,12 +486,3 @@
 
 </body>
 </html>
-
-
-
-
-
-
-
-
-
