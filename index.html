@@ -1,488 +1,280 @@
 <!DOCTYPE html>
 <html lang="sr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pogon.io | Digital Industrial Solutions</title>
-    <meta name="description" content="Razvoj naprednih MES sistema i softverskih rešenja za industriju 4.0. Povećajte produktivnost kroz digitalnu transformaciju.">
-
-    <!-- Google Analytics 4 (GA4) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-HL315S3MY8"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'G-HL315S3MY8');
-    </script>
-    
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
-    <style>
-        :root {
-            --primary: #3b82f6;
-            --accent: #0ea5e9;
-            --dark: #020617;
-            --glass: rgba(15, 23, 42, 0.7);
-            --text-gray: #94a3b8;
-        }
-
-        * { margin: 0; padding: 0; box-sizing: border-box; scroll-behavior: smooth; }
-
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: var(--dark);
-            color: white;
-            line-height: 1.6;
-            overflow-x: hidden;
-        }
-
-        /* --- NAVIGACIJA --- */
-        nav {
-            position: fixed;
-            top: 0; width: 100%;
-            padding: 15px 5%;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: rgba(2, 6, 23, 0.95);
-            backdrop-filter: blur(10px);
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-            z-index: 1000;
-        }
-
-        .logo {
-            font-size: 1.4rem;
-            font-weight: 800;
-            color: white;
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            white-space: nowrap;
-        }
-        .logo span { color: var(--primary); }
-        .logo img { height: 28px; }
-
-        /* Kontejner za desnu stranu menija */
-        .nav-links { 
-            display: flex; 
-            align-items: center; 
-            gap: 20px; 
-        }
-
-        /* Linkovi (Ekspertiza, Rešenja...) */
-        .nav-link-item {
-            color: var(--text-gray);
-            text-decoration: none;
-            font-size: 0.9rem;
-            font-weight: 500;
-            transition: color 0.3s;
-            white-space: nowrap;
-        }
-        .nav-link-item:hover { color: white; }
-        
-        /* Dugme za klijent portal */
-        .client-login-btn {
-            border: 1px solid var(--primary);
-            padding: 6px 15px;
-            border-radius: 4px;
-            color: var(--primary) !important;
-            font-size: 0.9rem;
-            text-decoration: none;
-            white-space: nowrap;
-            transition: 0.3s;
-        }
-        .client-login-btn:hover { background: var(--primary); color: white !important; }
-
-        /* Izbor jezika */
-        .lang-switch {
-            font-size: 0.9rem;
-            font-weight: 600;
-            color: var(--text-gray);
-            display: flex;
-            gap: 8px;
-            align-items: center;
-            padding-left: 15px;
-            border-left: 1px solid rgba(255,255,255,0.1);
-        }
-        .lang-switch a { text-decoration: none; color: var(--text-gray); transition: color 0.3s; }
-        .lang-switch a:hover { color: white; }
-        .lang-switch a.active { color: var(--primary); }
-        .lang-separator { opacity: 0.3; }
-
-
-        /* --- HERO --- */
-        .hero {
-            position: relative;
-            height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: flex-start;
-            padding: 0 10%;
-            overflow: hidden;
-        }
-
-        .video-illustration {
-            position: absolute;
-            top: 50%; left: 50%;
-            min-width: 100%; min-height: 100%;
-            transform: translate(-50%, -50%);
-            z-index: -1;
-            filter: brightness(0.4) contrast(1.1);
-        }
-
-        .hero-content { max-width: 700px; z-index: 2; margin-top: 60px; }
-
-        .tagline {
-            color: var(--accent);
-            font-weight: 600;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            font-size: 0.9rem;
-            margin-bottom: 20px;
-            display: block;
-        }
-
-        .hero h1 {
-            font-size: 3rem;
-            line-height: 1.1;
-            font-weight: 800;
-            margin-bottom: 25px;
-            background: linear-gradient(to right, #ffffff, #94a3b8);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .hero p {
-            font-size: 1.1rem;
-            color: #cbd5e1;
-            margin-bottom: 40px;
-            max-width: 600px;
-        }
-
-        .cta-group { display: flex; gap: 15px; flex-wrap: wrap; }
-
-        .btn {
-            padding: 12px 30px;
-            border-radius: 6px;
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 1rem;
-            transition: all 0.3s;
-        }
-
-        .btn-primary {
-            background: var(--primary);
-            color: white;
-            box-shadow: 0 10px 30px -10px rgba(59, 130, 246, 0.5);
-        }
-        .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 20px 40px -10px rgba(59, 130, 246, 0.6); }
-
-        .btn-outline {
-            border: 1px solid rgba(255,255,255,0.3);
-            color: white;
-            background: rgba(255,255,255,0.05);
-            backdrop-filter: blur(5px);
-        }
-        .btn-outline:hover { border-color: white; background: rgba(255,255,255,0.1); }
-
-        /* --- STATS BAR --- */
-        .stats-bar {
-            background: #0f172a;
-            border-top: 1px solid rgba(255,255,255,0.1);
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-            padding: 40px 10%;
-            display: flex;
-            justify-content: space-around;
-            flex-wrap: wrap;
-            gap: 20px;
-        }
-
-        .stat-item { text-align: center; margin: 10px; }
-        .stat-number { font-size: 2.5rem; font-weight: 800; color: white; display: block; }
-        .stat-label { color: var(--text-gray); font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px; }
-
-        /* --- SHOWCASE --- */
-        .showcase {
-            padding: 100px 10%;
-            background: #020617;
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 60px;
-            align-items: center;
-        }
-
-        .showcase-text h2 { font-size: 2.2rem; margin-bottom: 20px; }
-        .showcase-text p { color: var(--text-gray); margin-bottom: 30px; }
-
-        .feature-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-
-        .feature-box {
-            background: rgba(255,255,255,0.03);
-            padding: 20px;
-            border-radius: 12px;
-            border: 1px solid rgba(255,255,255,0.05);
-        }
-        .feature-box i { color: var(--primary); font-size: 1.5rem; margin-bottom: 15px; }
-        .feature-box h4 { margin-bottom: 10px; }
-        .feature-box p { font-size: 0.85rem; color: var(--text-gray); }
-
-        .showcase-img img {
-            width: 100%;
-            border-radius: 12px;
-            box-shadow: 0 0 50px rgba(59, 130, 246, 0.15);
-            border: 1px solid rgba(255,255,255,0.1);
-        }
-
-        /* --- SERVICES --- */
-        .services { padding: 100px 10%; background: #0f172a; text-align: center; }
-        .section-title { font-size: 2.5rem; margin-bottom: 60px; }
-        .cards-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px; }
-
-        .service-card {
-            background: #020617;
-            padding: 40px 30px;
-            border-radius: 16px;
-            border: 1px solid rgba(255,255,255,0.05);
-            transition: 0.3s;
-            text-align: left;
-        }
-        .service-card:hover { transform: translateY(-10px); border-color: var(--primary); }
-        
-        .service-icon {
-            width: 60px; height: 60px;
-            background: rgba(59, 130, 246, 0.1);
-            color: var(--primary);
-            display: flex; align-items: center; justify-content: center;
-            border-radius: 12px;
-            font-size: 1.5rem;
-            margin-bottom: 25px;
-        }
-        
-        .service-card h3 { font-size: 1.2rem; margin-bottom: 15px; }
-        .service-card p { color: var(--text-gray); font-size: 0.9rem; }
-
-        /* --- CONTACT FORM (Formspree) --- */
-        .contact-grid{display:flex; justify-content:space-between; gap:40px; flex-wrap:wrap;}
-        .contact-form{
-            width: min(520px, 100%);
-            margin-top: 10px;
-            display: grid;
-            gap: 12px;
-            text-align: left;
-        }
-        .contact-form .field-row{display:grid; grid-template-columns: 1fr 1fr; gap:12px;}
-        .contact-input, .contact-textarea{
-            width: 100%;
-            padding: 12px 14px;
-            border-radius: 10px;
-            border: 1px solid rgba(255,255,255,0.14);
-            background: rgba(255,255,255,0.04);
-            color: white;
-            outline: none;
-        }
-        .contact-input::placeholder, .contact-textarea::placeholder{color: rgba(148,163,184,0.85);}
-        .contact-input:focus, .contact-textarea:focus{
-            border-color: rgba(59,130,246,0.8);
-            box-shadow: 0 0 0 4px rgba(59,130,246,0.15);
-        }
-        .contact-textarea{resize: vertical; min-height: 120px;}
-        .contact-note{color: var(--text-gray); font-size:0.85rem;}
-
-        /* --- FOOTER --- */
-        footer {
-            padding: 60px 10% 20px;
-            background: #020617;
-            border-top: 1px solid rgba(255,255,255,0.05);
-            color: var(--text-gray);
-        }
-        .footer-content { display: flex; justify-content: space-between; margin-bottom: 40px; gap: 40px; flex-wrap: wrap; }
-        .footer-info h4 { color: white; margin-bottom: 15px; font-size: 1.2rem; }
-        .footer-bottom { text-align: center; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.05); font-size: 0.8rem; }
-
-        /* --- RESPONSIVE / MOBILE --- */
-        @media (max-width: 1024px) {
-            .hero h1 { font-size: 2.5rem; }
-            .showcase { grid-template-columns: 1fr; }
-        }
-
-        @media (max-width: 768px) {
-            nav { padding: 15px 20px; }
-            
-            /* SAKRIVAMO linkove i login dugme na mobilnom */
-            .nav-link-item, 
-            .client-login-btn,
-            .lang-separator { 
-                display: none; 
-            }
-            
-            /* FORSIRAMO prikaz jezika da bude vidljiv */
-            .lang-switch {
-                display: flex !important;
-                border-left: none; 
-                padding-left: 0;
-            }
-
-            .hero { padding: 0 5%; justify-content: center; text-align: center; }
-            .hero-content { margin-top: 0; }
-            .cta-group { justify-content: center; }
-            
-            .stats-bar { gap: 30px; }
-            .footer-content { flex-direction: column; gap: 30px; text-align: center; }
-            .contact-form{margin: 0 auto; text-align:left;}
-            .contact-form .field-row{grid-template-columns: 1fr;}
-            
-            .showcase-img { order: -1; margin-bottom: 30px; }
-        }
-    </style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Pogon.io | Digitalna inteligencija za vašu fabriku</title>
+  <meta name="description" content="Pogon MES povezuje radne naloge, operatere, kvalitet, zastoje i izveštaje u jedan pouzdan sistem za proizvodnju.">
+  <!-- Google Analytics 4 -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-HL315S3MY8"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag("js", new Date());
+    gtag("config", "G-HL315S3MY8");
+  </script>
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://pogon.io/">
+  <link rel="alternate" hreflang="sr" href="https://pogon.io/">
+  <link rel="alternate" hreflang="en" href="https://pogon.io/en/">
+  <link rel="alternate" hreflang="it" href="https://pogon.io/it/">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="sr_RS">
+  <meta property="og:site_name" content="Pogon.io">
+  <meta property="og:title" content="Pogon.io | Digitalna inteligencija za vašu fabriku">
+  <meta property="og:description" content="Pogon MES povezuje radne naloge, operatere, kvalitet, zastoje i izveštaje u jedan pouzdan sistem za proizvodnju.">
+  <meta property="og:url" content="https://pogon.io/">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Pogon.io | Digitalna inteligencija za vašu fabriku">
+  <meta name="twitter:description" content="Pogon MES povezuje radne naloge, operatere, kvalitet, zastoje i izveštaje u jedan pouzdan sistem za proizvodnju.">
+  <meta property="og:image" content="https://pogon.io/assets/images/homepage-pogon-io-1.jpg">
+  <meta name="twitter:image" content="https://pogon.io/assets/images/homepage-pogon-io-1.jpg">
+  <link rel="icon" type="image/png" href="assets/icons/favicon.png">
+  <link rel="stylesheet" href="assets/css/styles.css">
 </head>
 <body>
-
-    <nav>
-        <a href="#" class="logo">
-            <img src="Pogon_io_LOGO_vertical.png" alt="Pogon.io">
-            Pogon<span>.io</span>
-        </a>
-        
-        <div class="nav-links">
-            <a href="#about" class="nav-link-item">Ekspertiza</a>
-            <a href="#solutions" class="nav-link-item">Rešenja</a>
-            <a href="#contact" class="nav-link-item">Kontakt</a>
-            
-            <a href="portal.html" class="client-login-btn">Client Portal <i class="fas fa-lock"></i></a>
-    
-            <div class="lang-switch">
-                <a href="index.html" class="active">SR</a>
-                <span class="lang-separator">|</span>
-                <a href="en.html">EN</a>
-            </div>
+  <a class="skip-link" href="#main">Preskoči na sadržaj</a>
+  <header class="site-header">
+    <nav class="top-nav" aria-label="Glavna navigacija">
+      <a class="brand" href="index.html" aria-label="Pogon.io">
+        <span class="brand-logo" aria-hidden="true"><img src="assets/images/pogon-io-logo-vertical.png" alt="" width="40" height="40"></span>
+        <span class="brand-text">Pogon<span>.io</span></span>
+      </a>
+      <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="primary-menu">
+        <span></span><span></span><span></span>
+        <span class="sr-only">Otvori meni</span>
+      </button>
+      <div class="nav-panel" id="primary-menu">
+        <div class="nav-links"><a class="active" href="index.html" aria-current="page">Početna</a><a class="" href="resenja/index.html">Rešenja</a><a class="" href="kako-radimo/index.html">Kako radimo</a><a class="" href="o-nama/index.html">O nama</a><a class="" href="reference/index.html">Primeri primene</a><a class="" href="kontakt/index.html">Kontakt</a><a class="portal-link " href="portal/index.html">Client Portal</a></div>
+        <div class="language-switch" aria-label="Izbor jezika">
+          <span class="active" aria-current="true" lang="sr">SR</span>
+          <span aria-hidden="true">/</span>
+          <a href="en/index.html" lang="en">EN</a>
+          <span aria-hidden="true">/</span>
+          <a href="it/index.html" lang="it">IT</a>
         </div>
+      </div>
     </nav>
+  </header>
 
-    <header class="hero">
-        <video autoplay muted loop playsinline class="video-illustration">
-            <source src="video_digital_plant.mp4" type="video/mp4">
-        </video>
+  <main id="main">
 
-        <div class="hero-content">
-            <span class="tagline">Industrial Software Engineering</span>
-            <h1>Digitalna inteligencija <br> za vašu fabriku.</h1>
-            <p>Projektujemo namenska (custom) softverska rešenja za praćenje proizvodnje, kontrolu kvaliteta i automatizaciju procesa. Pretvaramo podatke u profit.</p>
-            
-            <div class="cta-group">
-                <a href="#contact" class="btn btn-primary">Zakažite konsultacije</a>
-                <a href="#solutions" class="btn btn-outline">Pogledajte rešenja</a>
-            </div>
-        </div>
-    </header>
 
-    <div class="stats-bar">
-        <div class="stat-item">
-            <span class="stat-number">99.9%</span>
-            <span class="stat-label">System Uptime</span>
-        </div>
-        <div class="stat-item">
-            <span class="stat-number">Industry 4.0</span>
-            <span class="stat-label">Ready Solutions</span>
-        </div>
-        <div class="stat-item">
-            <span class="stat-number">Custom</span>
-            <span class="stat-label">Development</span>
-        </div>
+<section class="hero-section">
+  <div class="hero-media" aria-hidden="true">
+    <video class="hero-background-video" autoplay muted loop playsinline preload="metadata" poster="assets/images/homepage-pogon-io-1.jpg">
+      <source src="assets/video/video-digital-plant.mp4" type="video/mp4">
+    </video>
+  </div>
+  <div class="hero-copy">
+    <span class="eyebrow">Industrial Software Engineering</span>
+    <h1>Digitalna inteligencija za vašu fabriku</h1>
+    <p class="hero-lead">Ne prilagođavajte se softveru. Neka se softver prilagodi vama.</p>
+    <p>Pogon MES povezuje radne naloge, operatere, kvalitet, zastoje i izveštaje u jedan pouzdan sistem. Dobijate jasniji pregled proizvodnje i informacije dostupne onda kada su vam potrebne.</p>
+    <div class="button-row">
+      <a class="btn primary" href="resenja/index.html">Pogledajte Pogon MES</a>
+      <a class="btn secondary" href="kontakt/index.html">Zakažite konsultacije</a>
     </div>
+  </div>
+  <div class="hero-visual" aria-label="Pogon MES dashboard">
+    <div class="factory-frame">
+      <div class="frame-toolbar"><span></span><span></span><span></span><strong>MES Live</strong></div>
+      <div class="metric-row">
+        <div><span>WO-2407</span><strong>Aktivan nalog</strong></div>
+        <div><span>87%</span><strong>Ostvarenje</strong></div>
+        <div><span>12 min</span><strong>Zastoj</strong></div>
+      </div>
+      <div class="line-chart" aria-hidden="true"><i style="height:42%"></i><i style="height:62%"></i><i style="height:48%"></i><i style="height:78%"></i><i style="height:70%"></i><i style="height:88%"></i></div>
+      <div class="station-list">
+        <span>Linija A · rad</span>
+        <span>QC · čekanje uzorka</span>
+        <span>Pakovanje · stabilno</span>
+      </div>
+    </div>
+  </div>
+</section>
 
-    <section id="about" class="showcase">
-        <div class="showcase-img">
-            <img src="Homepage Pogon io 1.jpg" alt="Pogon.io MES Interface">
-        </div>
-        <div class="showcase-text">
-            <h2>Ne prilagođavajte se softveru. <br> Neka se softver prilagodi vama.</h2>
-            <p>Za razliku od gotovih "boxed" rešenja, mi razvijamo sisteme koji prate specifičan DNK vaše proizvodnje. Naš tim spaja inženjersko iskustvo sa modernim tehnologijama.</p>
+<section class="section media-proof-section">
+  <figure class="industrial-photo">
+    <img src="assets/images/homepage-pogon-io-1.jpg" alt="Digitalizovana proizvodna linija sa industrijskom automatizacijom i softverskim prikazima" width="2048" height="1000" loading="lazy">
+  </figure>
+  <div>
+    <span class="eyebrow">Pogon MES</span>
+    <h2>Softver koji razume proizvodnju</h2>
+    <p>Pogon.io povezuje ljude, mašine i podatke u sistem koji prati stvarni tok proizvodnje.</p>
+    <p>Od radnog naloga i operaterske stanice, preko zastoja i kontrole kvaliteta, do pregleda rezultata — informacije su dostupne tamo gde su potrebne i onda kada su potrebne.</p>
+    <p class="section-punchline">Manje ručnog rada. Više kontrole. Brže odluke.</p>
+  </div>
+</section>
 
-            <div class="feature-grid">
-                <div class="feature-box">
-                    <i class="fas fa-microchip"></i>
-                    <h4>Digitalna sledljivost</h4>
-                    <p>Precizno praćenje radnih naloga i operatera putem QR i NFC tehnologije.</p>
-                </div>
-                <div class="feature-box">
-                    <i class="fas fa-chart-area"></i>
-                    <h4>Real-time Analytics</h4>
-                    <p>Odluke zasnovane na podacima u realnom vremenu.</p>
-                </div>
-                <div class="feature-box">
-                    <i class="fas fa-mobile-alt"></i>
-                    <h4>Kiosk Aplikacije</h4>
-                    <p>Jednostavan interfejs za operatere u pogonu.</p>
-                </div>
-                <div class="feature-box">
-                    <i class="fas fa-cloud"></i>
-                    <h4>Cloud Native</h4>
-                    <p>Skalabilnost, bezbednost i pristup od svuda.</p>
-                </div>
-            </div>
-        </div>
-    </section>
+<section class="section">
+  <div class="section-heading">
+    <span class="eyebrow">Izazovi u proizvodnji</span>
+    <h2>Gde nastaju gubici</h2>
+    <p>Kada se podaci vode na papiru, u nepovezanim tabelama ili u više različitih sistema, informacije kasne, a problemi se teže uočavaju.</p>
+  </div>
+  <div class="card-grid">
+    <article class="info-card">
+      <span class="card-kicker">Podaci</span>
+      <h3>Papir i nepovezane tabele</h3>
+      <p>Radni nalozi i proizvodni podaci vode se na jednom mestu, bez ponovnog prepisivanja istih informacija.</p>
+    </article>
+    <article class="info-card">
+      <span class="card-kicker">Vreme</span>
+      <h3>Informacije stižu prekasno</h3>
+      <p>Rukovodstvo vidi trenutno stanje proizvodnje bez čekanja na ručnu pripremu izveštaja.</p>
+    </article>
+    <article class="info-card">
+      <span class="card-kicker">Sledljivost</span>
+      <h3>Teško je pronaći uzrok</h3>
+      <p>Nalog, operater, artikl, škart i zastoj povezani su u jedan jasan zapis.</p>
+    </article>
+    <article class="info-card">
+      <span class="card-kicker">Kvalitet</span>
+      <h3>Škart bez jasnog porekla</h3>
+      <p>Razlog, količina, vreme i mesto nastanka škarta evidentiraju se neposredno u proizvodnji.</p>
+    </article>
+    <article class="info-card">
+      <span class="card-kicker">Zastoji</span>
+      <h3>Gubici se teško mere</h3>
+      <p>Svaki zastoj dobija razlog, trajanje i vezu sa konkretnom mašinom, stanicom ili nalogom.</p>
+    </article>
+    <article class="info-card">
+      <span class="card-kicker">Integracije</span>
+      <h3>Pogon i poslovni sistem nisu povezani</h3>
+      <p>Kada tehnički uslovi to dozvoljavaju, proizvodni podaci mogu se povezati sa ERP, SAP i drugim poslovnim sistemima.</p>
+    </article></div>
+</section>
 
-    <section id="solutions" class="services">
-        <h2 class="section-title">Naša Rešenja</h2>
-        <div class="cards-container">
-            <div class="service-card">
-                <div class="service-icon"><i class="fas fa-cogs"></i></div>
-                <h3>Custom MES Razvoj</h3>
-                <p>Kompletni sistemi za upravljanje proizvodnjom (Manufacturing Execution Systems) skrojeni po meri.</p>
-            </div>
-            <div class="service-card">
-                <div class="service-icon"><i class="fas fa-tablet-alt"></i></div>
-                <h3>Shop Floor Apps</h3>
-                <p>Digitalizacija radnih naloga, škarta i zastoja putem tableta i ekrana osetljivih na dodir.</p>
-            </div>
-            <div class="service-card">
-                <div class="service-icon"><i class="fas fa-database"></i></div>
-                <h3>Sistemske Integracije</h3>
-                <p>Povezivanje vašeg ERP-a (SAP, Pantheon, itd.) sa proizvodnim linijama.</p>
-            </div>
-        </div>
-    </section>
+<section class="section split-section">
+  <div>
+    <span class="eyebrow">Rešenja</span>
+    <h2>Jedan sistem za ceo pogon</h2>
+    <p>Pogon MES se prilagođava vašim procesima, ulogama i postojećim sistemima — bez nametanja nepotrebno složenog načina rada.</p>
+    <a class="inline-link" href="resenja/index.html">Detaljno o rešenjima</a>
+  </div>
+  <div class="card-grid">
+    <article class="info-card">
+      <span class="card-kicker">MES</span>
+      <h3>Pogon MES</h3>
+      <p>Radni nalozi, stanice, operateri, količine, statusi i završetak naloga.</p>
+    </article>
+    <article class="info-card">
+      <span class="card-kicker">Shop floor</span>
+      <h3>Operaterske aplikacije</h3>
+      <p>Jednostavni ekrani za rad u industrijskom okruženju i minimalan broj koraka.</p>
+    </article>
+    <article class="info-card">
+      <span class="card-kicker">Quality</span>
+      <h3>Kvalitet i sledljivost</h3>
+      <p>Evidencija škarta, kontrola kvaliteta i veza sa artiklom i nalogom.</p>
+    </article>
+    <article class="info-card">
+      <span class="card-kicker">KPI</span>
+      <h3>Dashboardi i izveštaji</h3>
+      <p>Pregled aktivne proizvodnje, trendova, zastoja i planirano u odnosu na ostvareno.</p>
+    </article></div>
+</section>
 
-    <footer id="contact">
-        <div class="footer-content">
-            <div class="footer-info" style="min-width: 260px;">
-                <h4>Pogon.io</h4>
-                <p>Vaš partner za digitalnu transformaciju.</p>
-                <p>Kragujevac, Srbija</p>
-                <br>
-                <a href="mailto:info@pogon.io" style="color: var(--primary); text-decoration: none;">contact@pogon.io</a>
-            </div>
+<section class="section dark-band">
+  <div class="section-heading">
+    <span class="eyebrow">Kako sistem radi</span>
+    <h2>Od naloga do rezultata</h2>
+    <p>Svaki korak proizvodnje ostavlja jasan i povezan zapis — od pokretanja naloga do završnog izveštaja.</p>
+  </div>
+  <ol class="process-flow production-flow"><li><span>Radni nalog</span><p>Planirani posao ulazi u proizvodnju sa jasnim artiklom, količinom i prioritetom.</p></li><li><span>Operater i stanica</span><p>Operater vidi nalog, prijavljuje rad i unosi podatke tamo gde posao nastaje.</p></li><li><span>Proizvodnja i količine</span><p>Proizvedene količine i statusi prate se kroz povezan proizvodni zapis.</p></li><li><span>Kvalitet i škart</span><p>Kontrole, odstupanja i škart povezuju se sa nalogom, artiklom i mestom nastanka.</p></li><li><span>Zastoji i pauze</span><p>Gubici dobijaju razlog, trajanje i vezu sa konkretnom mašinom ili stanicom.</p></li><li><span>Dashboardi i izveštaji</span><p>Rukovodstvo dobija pregled stanja bez ručne konsolidacije podataka.</p></li></ol>
+</section>
 
-            <div class="footer-info" style="min-width: 240px;">
-                <h4>Linkovi</h4>
-                <a href="#" style="color: #94a3b8; text-decoration: none; display: block;">Početna</a>
-                <a href="#about" style="color: #94a3b8; text-decoration: none; display: block;">O nama</a>
-                <a href="portal.html" style="color: #94a3b8; text-decoration: none; display: block;">Klijent Login</a>
-            </div>
+<section class="section">
+  <div class="section-heading">
+    <span class="eyebrow">Za ceo tim</span>
+    <h2>Prave informacije za svaku ulogu</h2>
+  </div>
+  <div class="card-grid">
+    <article class="info-card">
+      <span class="card-kicker">Operater</span>
+      <h3>Jasan dnevni rad</h3>
+      <p>Velike kontrole, izbor naloga, unos količina, zastoja i škarta bez nepotrebnih koraka.</p>
+    </article>
+    <article class="info-card">
+      <span class="card-kicker">Vođa smene</span>
+      <h3>Pregled smene</h3>
+      <p>Status aktivnih stanica, problemi u toku smene i jednostavnija primopredaja.</p>
+    </article>
+    <article class="info-card">
+      <span class="card-kicker">Kvalitet</span>
+      <h3>Povezana evidencija</h3>
+      <p>Kontrole i neusaglašenosti vezane su za nalog, artikl, vreme i radnu stanicu.</p>
+    </article>
+    <article class="info-card">
+      <span class="card-kicker">Planer</span>
+      <h3>Bolja priprema</h3>
+      <p>Pregled statusa naloga i informacija potrebnih za sledeće planiranje.</p>
+    </article>
+    <article class="info-card">
+      <span class="card-kicker">Rukovodilac</span>
+      <h3>Operativni uvid</h3>
+      <p>Dashboardi, KPI pokazatelji i trendovi bez ručne konsolidacije iz više izvora.</p>
+    </article>
+    <article class="info-card">
+      <span class="card-kicker">Administrator</span>
+      <h3>Kontrolisana podešavanja</h3>
+      <p>Uloge, korisnici, artikli, standardi i stanice organizovani na jednom mestu.</p>
+    </article></div>
+</section>
 
-            <div class="footer-info" style="flex: 1; min-width: 320px;">
-                <h4>Zakažite konsultacije</h4>
-                <p class="contact-note">Pošaljite kratak opis potrebe i javićemo se u najkraćem roku.</p>
+<section class="section split-section">
+  <div>
+    <span class="eyebrow">Uvođenje sistema</span>
+    <h2>Počnite od jednog problema</h2>
+    <p>Izaberemo proces, liniju ili radnu stanicu na kojoj postoji jasan problem. Sistem prvo proveravamo u kontrolisanom obimu, a zatim ga širimo u skladu sa rezultatima i potrebama proizvodnje.</p>
+    <a class="btn secondary" href="kako-radimo/index.html">Pogledajte naš pristup</a>
+  </div>
+  <ol class="process-flow"><li><span>Analiza procesa</span></li><li><span>Definisanje pilot-projekta</span></li><li><span>Prilagođavanje sistema</span></li><li><span>Testiranje</span></li><li><span>Postepeno uvođenje</span></li><li><span>Obuka i podrška</span></li></ol>
+</section>
 
-                <form class="contact-form" action="https://formspree.io/f/mbdwangj" method="POST">
-                    <div class="field-row">
-                        <input class="contact-input" name="name" placeholder="Ime i prezime" required>
-                        <input class="contact-input" name="company" placeholder="Firma">
-                    </div>
-                    <input class="contact-input" type="email" name="email" placeholder="Email" required>
-                    <textarea class="contact-textarea" name="message" placeholder="Poruka" required></textarea>
-                    <input type="hidden" name="_subject" value="Pogon.io — Upit sa sajta">
-                    <button type="submit" class="btn btn-primary" style="width: fit-content;">Pošalji</button>
-                </form>
-            </div>
-        </div>
-        <div class="footer-bottom">
-            <p>&copy; 2025 Pogon.io Industrial Digital Solutions. All rights reserved.</p>
-        </div>
-    </footer>
+<section class="section case-highlight">
+  <span class="eyebrow">Primer primene</span>
+  <h2>Pilot na jednoj proizvodnoj liniji</h2>
+  <p>Pogon MES može početi od jednog procesa: operaterskog ekrana, evidencije količina, zastoja i škarta, uz pregled koji rukovodstvu daje pouzdanije dnevne informacije.</p>
+  <ul class="check-list"><li>Jasniji tok radnog naloga od pokretanja do završetka.</li><li>Manje ručnog prepisivanja podataka između smene i kancelarije.</li><li>Povezana evidencija kvaliteta, škarta i zastoja.</li><li>Kontrolisano širenje sistema nakon potvrđenog pilot-obima.</li></ul>
+</section>
 
+<section class="section final-cta">
+  <h2>Unapredimo vašu proizvodnju</h2>
+  <p>Razgovarajmo o procesu koji želite bolje da pratite, kontrolišete ili automatizujete.</p>
+  <div class="button-row">
+    <a class="btn primary" href="kontakt/index.html">Zakažite razgovor</a>
+    <a class="btn secondary" href="kontakt/index.html">Pošaljite upit</a>
+  </div>
+</section>
+    <section class="bottom-image-break" aria-hidden="true"></section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-grid">
+      <section>
+        <a class="brand footer-brand" href="index.html" aria-label="Pogon.io">
+          <span class="brand-logo" aria-hidden="true"><img src="assets/images/pogon-io-logo-vertical.png" alt="" width="40" height="40"></span>
+          <span class="brand-text">Pogon<span>.io</span></span>
+        </a>
+        <p>Pogon MES za radne naloge, operaterske stanice, kvalitet, zastoje i pregled proizvodnje u realnom vremenu.</p>
+      </section>
+      <section>
+        <h2>Navigacija</h2>
+        <div class="footer-links"><a href="index.html">Početna</a><a href="resenja/index.html">Rešenja</a><a href="kako-radimo/index.html">Kako radimo</a><a href="o-nama/index.html">O nama</a><a href="reference/index.html">Primeri primene</a><a href="kontakt/index.html">Kontakt</a></div>
+      </section>
+      <section>
+        <h2>Kontakt</h2>
+        <p>Kragujevac, Srbija</p>
+        <p><a href="mailto:contact@pogon.io">contact@pogon.io</a></p>
+        <p>Razgovarajmo o procesu koji želite bolje da pratite, kontrolišete ili automatizujete.</p>
+      </section>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2026 Pogon.io. Sva prava zadržana.</p>
+    </div>
+  </footer>
+  <script src="assets/js/main.js" defer></script>
 </body>
 </html>
