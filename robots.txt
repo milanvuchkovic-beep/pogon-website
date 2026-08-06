@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /presentation.html
+Disallow: /demo/
+
+Sitemap: https://pogon.io/sitemap.xml
