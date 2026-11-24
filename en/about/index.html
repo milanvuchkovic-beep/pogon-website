@@ -18,6 +18,7 @@
   <link rel="alternate" hreflang="sr" href="https://pogon.io/o-nama/">
   <link rel="alternate" hreflang="en" href="https://pogon.io/en/about/">
   <link rel="alternate" hreflang="it" href="https://pogon.io/it/chi-siamo/">
+  <link rel="alternate" hreflang="x-default" href="https://pogon.io/o-nama/">
   <meta property="og:type" content="website">
   <meta property="og:locale" content="en_US">
   <meta property="og:site_name" content="Pogon.io">
@@ -31,6 +32,74 @@
   <meta name="twitter:image" content="https://pogon.io/assets/images/homepage-pogon-io-1.jpg">
   <link rel="icon" type="image/png" href="../../assets/icons/favicon.png">
   <link rel="stylesheet" href="../../assets/css/styles.css">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Organization",
+        "@id": "https://pogon.io/#organization",
+        "name": "Pogon.io",
+        "url": "https://pogon.io/",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://pogon.io/assets/images/pogon-io-logo-vertical.png"
+        },
+        "email": "contact@pogon.io",
+        "description": "Pogon.io develops Pogon MES, dedicated industrial software that connects work orders, operators, quality, downtime and reporting. Based in Kragujevac, Serbia.",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Kragujevac",
+          "addressCountry": "RS"
+        }
+      },
+      {
+        "@type": "WebSite",
+        "@id": "https://pogon.io/#website",
+        "name": "Pogon.io",
+        "url": "https://pogon.io/",
+        "publisher": {
+          "@id": "https://pogon.io/#organization"
+        },
+        "inLanguage": [
+          "sr",
+          "en",
+          "it"
+        ]
+      },
+      {
+        "@type": "SoftwareApplication",
+        "@id": "https://pogon.io/#pogon-mes",
+        "name": "Pogon MES",
+        "applicationCategory": "BusinessApplication",
+        "applicationSubCategory": "Manufacturing Execution System",
+        "operatingSystem": "Web",
+        "url": "https://pogon.io/en/solutions/",
+        "description": "Manufacturing execution system for work orders, operator screens, scrap, quality, downtime, dashboards and links to business systems when the technical conditions allow it.",
+        "provider": {
+          "@id": "https://pogon.io/#organization"
+        }
+      },
+      {
+        "@type": "AboutPage",
+        "@id": "https://pogon.io/en/about/#webpage",
+        "url": "https://pogon.io/en/about/",
+        "name": "About | Pogon.io",
+        "description": "Pogon.io develops dedicated industrial software connecting production, operators, quality and business systems.",
+        "inLanguage": "en",
+        "isPartOf": {
+          "@id": "https://pogon.io/#website"
+        },
+        "about": {
+          "@id": "https://pogon.io/#pogon-mes"
+        },
+        "publisher": {
+          "@id": "https://pogon.io/#organization"
+        }
+      }
+    ]
+  }
+  </script>
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>

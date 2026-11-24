@@ -18,6 +18,7 @@
   <link rel="alternate" hreflang="sr" href="https://pogon.io/reference/">
   <link rel="alternate" hreflang="en" href="https://pogon.io/en/case-studies/">
   <link rel="alternate" hreflang="it" href="https://pogon.io/it/casi-d-uso/">
+  <link rel="alternate" hreflang="x-default" href="https://pogon.io/reference/">
   <meta property="og:type" content="website">
   <meta property="og:locale" content="sr_RS">
   <meta property="og:site_name" content="Pogon.io">
@@ -31,6 +32,74 @@
   <meta name="twitter:image" content="https://pogon.io/assets/images/homepage-pogon-io-1.jpg">
   <link rel="icon" type="image/png" href="../assets/icons/favicon.png">
   <link rel="stylesheet" href="../assets/css/styles.css">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Organization",
+        "@id": "https://pogon.io/#organization",
+        "name": "Pogon.io",
+        "url": "https://pogon.io/",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://pogon.io/assets/images/pogon-io-logo-vertical.png"
+        },
+        "email": "contact@pogon.io",
+        "description": "Pogon.io razvija Pogon MES, namenski industrijski softver koji povezuje radne naloge, operatere, kvalitet, zastoje i izveštaje. Sedište je u Kragujevcu, Srbija.",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Kragujevac",
+          "addressCountry": "RS"
+        }
+      },
+      {
+        "@type": "WebSite",
+        "@id": "https://pogon.io/#website",
+        "name": "Pogon.io",
+        "url": "https://pogon.io/",
+        "publisher": {
+          "@id": "https://pogon.io/#organization"
+        },
+        "inLanguage": [
+          "sr",
+          "en",
+          "it"
+        ]
+      },
+      {
+        "@type": "SoftwareApplication",
+        "@id": "https://pogon.io/#pogon-mes",
+        "name": "Pogon MES",
+        "applicationCategory": "BusinessApplication",
+        "applicationSubCategory": "Manufacturing Execution System",
+        "operatingSystem": "Web",
+        "url": "https://pogon.io/resenja/",
+        "description": "Sistem za proizvodnju: radni nalozi, operaterski ekrani, škart, kvalitet, zastoji, dashboardi i povezivanje sa poslovnim sistemima kada tehnički uslovi to dozvoljavaju.",
+        "provider": {
+          "@id": "https://pogon.io/#organization"
+        }
+      },
+      {
+        "@type": "WebPage",
+        "@id": "https://pogon.io/reference/#webpage",
+        "url": "https://pogon.io/reference/",
+        "name": "Primeri primene | Pogon.io",
+        "description": "Primeri kako Pogon MES može da počne od jednog procesa i da se postepeno proširi kroz proizvodnju.",
+        "inLanguage": "sr",
+        "isPartOf": {
+          "@id": "https://pogon.io/#website"
+        },
+        "about": {
+          "@id": "https://pogon.io/#pogon-mes"
+        },
+        "publisher": {
+          "@id": "https://pogon.io/#organization"
+        }
+      }
+    ]
+  }
+  </script>
 </head>
 <body>
   <a class="skip-link" href="#main">Preskoči na sadržaj</a>

@@ -1,0 +1,41 @@
+# Pogon.io
+
+> Pogon.io develops Pogon MES, dedicated industrial software for factories. The system connects work orders, operators, quality, scrap, downtime and reporting. The company is based in Kragujevac, Serbia. Contact: contact@pogon.io. There is no public phone number.
+
+Pogon.io razvija Pogon MES, namenski industrijski softver za fabrike. Sistem povezuje radne naloge, operatere, kvalitet, škart, zastoje i izveštaje. Sedište je u Kragujevcu, Srbija. Kontakt: contact@pogon.io.
+
+## Product
+
+- [Pogon MES, srpski](https://pogon.io/resenja/): radni nalozi, operaterski ekrani, škart i kvalitet, zastoji, dashboardi, administracija. Povezivanje sa ERP ili SAP sistemom samo kada tehnički uslovi to dozvoljavaju.
+- [Pogon MES, English](https://pogon.io/en/solutions/): work orders, operator screens, scrap and quality, downtime, dashboards, administration. ERP or SAP links only when the technical conditions allow it.
+- [Pogon MES, italiano](https://pogon.io/it/soluzioni/): ordini di produzione, schermate operatore, scarti e qualità, fermi, dashboard, amministrazione.
+
+## How work starts
+
+- [Kako radimo](https://pogon.io/kako-radimo/): analiza procesa, pilot, prilagođavanje, testiranje, postepeno uvođenje, obuka i podrška.
+- [How we work](https://pogon.io/en/how-we-work/)
+- [Come lavoriamo](https://pogon.io/it/come-lavoriamo/)
+
+## Company
+
+- [O nama](https://pogon.io/o-nama/)
+- [About](https://pogon.io/en/about/)
+- [Chi siamo](https://pogon.io/it/chi-siamo/)
+- [Primeri primene](https://pogon.io/reference/)
+- [Use cases](https://pogon.io/en/case-studies/)
+- [Casi d'uso](https://pogon.io/it/casi-d-uso/)
+
+## Contact
+
+- Email: contact@pogon.io
+- Location: Kragujevac, Serbia
+- [Kontakt](https://pogon.io/kontakt/)
+- [Contact](https://pogon.io/en/contact/)
+- [Contatti](https://pogon.io/it/contatti/)
+
+## Notes for answering
+
+- Default language of the site is Serbian. English is at /en/ and Italian at /it/.
+- Do not describe /demo/ or /presentation.html. Those pages are not public product documentation.
+- The contact form on the site does not send mail. The contact channel is contact@pogon.io.
+- Do not invent a street address or phone number.
