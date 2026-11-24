@@ -18,6 +18,7 @@
   <link rel="alternate" hreflang="sr" href="https://pogon.io/kako-radimo/">
   <link rel="alternate" hreflang="en" href="https://pogon.io/en/how-we-work/">
   <link rel="alternate" hreflang="it" href="https://pogon.io/it/come-lavoriamo/">
+  <link rel="alternate" hreflang="x-default" href="https://pogon.io/kako-radimo/">
   <meta property="og:type" content="website">
   <meta property="og:locale" content="it_IT">
   <meta property="og:site_name" content="Pogon.io">
@@ -31,6 +32,74 @@
   <meta name="twitter:image" content="https://pogon.io/assets/images/homepage-pogon-io-1.jpg">
   <link rel="icon" type="image/png" href="../../assets/icons/favicon.png">
   <link rel="stylesheet" href="../../assets/css/styles.css">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Organization",
+        "@id": "https://pogon.io/#organization",
+        "name": "Pogon.io",
+        "url": "https://pogon.io/",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://pogon.io/assets/images/pogon-io-logo-vertical.png"
+        },
+        "email": "contact@pogon.io",
+        "description": "Pogon.io sviluppa Pogon MES, software industriale dedicato che collega ordini di produzione, operatori, qualità, fermi e report. Sede a Kragujevac, in Serbia.",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Kragujevac",
+          "addressCountry": "RS"
+        }
+      },
+      {
+        "@type": "WebSite",
+        "@id": "https://pogon.io/#website",
+        "name": "Pogon.io",
+        "url": "https://pogon.io/",
+        "publisher": {
+          "@id": "https://pogon.io/#organization"
+        },
+        "inLanguage": [
+          "sr",
+          "en",
+          "it"
+        ]
+      },
+      {
+        "@type": "SoftwareApplication",
+        "@id": "https://pogon.io/#pogon-mes",
+        "name": "Pogon MES",
+        "applicationCategory": "BusinessApplication",
+        "applicationSubCategory": "Manufacturing Execution System",
+        "operatingSystem": "Web",
+        "url": "https://pogon.io/it/soluzioni/",
+        "description": "Sistema di esecuzione della produzione per ordini, schermate operatore, scarti, qualità, fermi, dashboard e collegamenti ai sistemi gestionali quando le condizioni tecniche lo consentono.",
+        "provider": {
+          "@id": "https://pogon.io/#organization"
+        }
+      },
+      {
+        "@type": "WebPage",
+        "@id": "https://pogon.io/it/come-lavoriamo/#webpage",
+        "url": "https://pogon.io/it/come-lavoriamo/",
+        "name": "Come lavoriamo | Pogon.io",
+        "description": "Il processo di implementazione di Pogon MES: analisi, progetto pilota, configurazione, test, introduzione e supporto.",
+        "inLanguage": "it",
+        "isPartOf": {
+          "@id": "https://pogon.io/#website"
+        },
+        "about": {
+          "@id": "https://pogon.io/#pogon-mes"
+        },
+        "publisher": {
+          "@id": "https://pogon.io/#organization"
+        }
+      }
+    ]
+  }
+  </script>
 </head>
 <body>
   <a class="skip-link" href="#main">Vai al contenuto</a>
